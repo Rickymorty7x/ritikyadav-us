@@ -9,12 +9,17 @@
   --sand: #f3efe6;
   --line: rgba(20, 32, 28, 0.12);
   --focus: #1f6b57;
+  --glow: rgba(31, 107, 87, 0.18);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -37,12 +42,26 @@ a {
   position: fixed;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
   background:
     radial-gradient(ellipse 90% 70% at 12% 18%, rgba(200, 230, 216, 0.85) 0%, transparent 55%),
     radial-gradient(ellipse 80% 60% at 88% 12%, rgba(215, 232, 242, 0.9) 0%, transparent 50%),
     radial-gradient(ellipse 70% 50% at 70% 88%, rgba(243, 239, 230, 0.95) 0%, transparent 55%),
     linear-gradient(160deg, #eaf3ef 0%, #e4eef5 45%, #f2eee6 100%);
   animation: drift 18s ease-in-out infinite alternate;
+}
+
+.atmosphere::before {
+  content: "";
+  position: absolute;
+  width: 42vmax;
+  height: 42vmax;
+  left: -8%;
+  top: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 68%);
+  animation: float 14s ease-in-out infinite alternate;
+  pointer-events: none;
 }
 
 .atmosphere::after {
@@ -60,6 +79,11 @@ a {
 @keyframes drift {
   from { transform: scale(1) translate(0, 0); }
   to { transform: scale(1.04) translate(-1.2%, 0.8%); }
+}
+
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(8%, -6%) scale(1.12); }
 }
 
 .site-header {
@@ -81,6 +105,13 @@ a {
   letter-spacing: -0.03em;
   color: var(--brand);
   text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover,
+.logo:focus-visible {
+  opacity: 0.72;
+  outline: none;
 }
 
 .nav {
@@ -117,14 +148,15 @@ a {
   z-index: 1;
   max-width: 72rem;
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vw, 6rem);
+  padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 4.5rem);
+  min-height: calc(100svh - 8rem);
 }
 
 .hero {
-  min-height: calc(100svh - 4.5rem);
+  min-height: calc(100svh - 8rem);
   display: grid;
   align-content: center;
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
 }
 
 .brand {
@@ -147,7 +179,7 @@ a {
   line-height: 0.95;
   letter-spacing: -0.04em;
   color: var(--brand);
-  margin-top: clamp(2rem, 6vw, 4rem);
+  margin-top: clamp(1.5rem, 5vw, 3.25rem);
   opacity: 0;
   transform: translateY(1rem);
   animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
@@ -222,7 +254,7 @@ a {
 }
 
 .content {
-  margin-top: clamp(2.5rem, 6vw, 4rem);
+  margin-top: clamp(2.25rem, 5vw, 3.5rem);
   max-width: 40rem;
   opacity: 0;
   transform: translateY(1rem);
@@ -241,7 +273,7 @@ a {
 }
 
 .stack {
-  margin-top: clamp(2.5rem, 6vw, 4rem);
+  margin-top: clamp(2.25rem, 5vw, 3.5rem);
   display: grid;
   gap: 0;
   opacity: 0;
@@ -262,8 +294,8 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
-.stack-item:hover,
-.stack-item:focus-visible {
+a.stack-item:hover,
+a.stack-item:focus-visible {
   padding-left: 0.5rem;
   outline: none;
 }
@@ -293,7 +325,7 @@ a {
 }
 
 .social-links {
-  margin-top: clamp(2rem, 5vw, 3rem);
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem 1.5rem;
@@ -319,7 +351,7 @@ a {
 }
 
 .contact-form {
-  margin-top: clamp(2.5rem, 6vw, 4rem);
+  margin-top: clamp(2.25rem, 5vw, 3.5rem);
   max-width: 32rem;
   display: grid;
   gap: 1.15rem;
@@ -394,6 +426,48 @@ a {
   font-weight: 500;
 }
 
+.note a {
+  color: var(--sea);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+
+.note a:hover,
+.note a:focus-visible {
+  border-color: var(--sea);
+  outline: none;
+}
+
+.site-footer {
+  position: relative;
+  z-index: 1;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 4rem) 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+  opacity: 0;
+  animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.65s forwards;
+}
+
+.site-footer a {
+  color: var(--sea);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--brand);
+  outline: none;
+}
+
 @keyframes rise {
   to {
     opacity: 1;
@@ -414,7 +488,12 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .atmosphere,
+  .atmosphere::before,
   .brand,
   .page-title,
   .headline,
@@ -424,7 +503,8 @@ a {
   .content,
   .stack,
   .social-links,
-  .contact-form {
+  .contact-form,
+  .site-footer {
     animation: none;
     opacity: 1;
     transform: none;
