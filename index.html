@@ -8,182 +8,37 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --ink: #14201c;
-      --muted: #3d5249;
-      --brand: #0f2e28;
-      --sea: #1f6b57;
-      --sea-soft: #c8e6d8;
-      --mist: #eef5f1;
-      --sky: #d7e8f2;
-      --sand: #f3efe6;
-      --focus: #1f6b57;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      min-height: 100%;
-    }
-
-    body {
-      font-family: "Figtree", sans-serif;
-      color: var(--ink);
-      background: var(--mist);
-      overflow-x: hidden;
-    }
-
-    .atmosphere {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background:
-        radial-gradient(ellipse 90% 70% at 12% 18%, rgba(200, 230, 216, 0.85) 0%, transparent 55%),
-        radial-gradient(ellipse 80% 60% at 88% 12%, rgba(215, 232, 242, 0.9) 0%, transparent 50%),
-        radial-gradient(ellipse 70% 50% at 70% 88%, rgba(243, 239, 230, 0.95) 0%, transparent 55%),
-        linear-gradient(160deg, #eaf3ef 0%, #e4eef5 45%, #f2eee6 100%);
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-
-    .atmosphere::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(20, 32, 28, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(20, 32, 28, 0.03) 1px, transparent 1px);
-      background-size: 72px 72px;
-      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
-      pointer-events: none;
-    }
-
-    @keyframes drift {
-      from { transform: scale(1) translate(0, 0); }
-      to { transform: scale(1.04) translate(-1.2%, 0.8%); }
-    }
-
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100svh;
-      display: grid;
-      align-content: center;
-      padding: clamp(1.5rem, 5vw, 4rem);
-      max-width: 72rem;
-      margin: 0 auto;
-    }
-
-    .brand {
-      font-family: "Bricolage Grotesque", sans-serif;
-      font-weight: 700;
-      font-size: clamp(3.4rem, 12vw, 8.5rem);
-      line-height: 0.92;
-      letter-spacing: -0.04em;
-      color: var(--brand);
-      max-width: 11ch;
-      opacity: 0;
-      transform: translateY(1.25rem);
-      animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
-    }
-
-    .headline {
-      margin-top: clamp(1.25rem, 3vw, 2rem);
-      font-family: "Bricolage Grotesque", sans-serif;
-      font-weight: 500;
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      opacity: 0;
-      transform: translateY(1rem);
-      animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s forwards;
-    }
-
-    .lede {
-      margin-top: 0.85rem;
-      max-width: 28rem;
-      font-size: clamp(1.05rem, 2.1vw, 1.2rem);
-      line-height: 1.55;
-      color: var(--muted);
-      font-weight: 500;
-      opacity: 0;
-      transform: translateY(1rem);
-      animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.42s forwards;
-    }
-
-    .cta {
-      margin-top: clamp(1.75rem, 4vw, 2.5rem);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      width: fit-content;
-      color: var(--sea);
-      font-weight: 600;
-      font-size: 1.05rem;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      padding-bottom: 0.15rem;
-      opacity: 0;
-      transform: translateY(0.75rem);
-      animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.56s forwards;
-      transition: border-color 0.25s ease, gap 0.25s ease, color 0.25s ease;
-    }
-
-    .cta:hover,
-    .cta:focus-visible {
-      border-color: var(--sea);
-      gap: 0.85rem;
-      color: var(--brand);
-      outline: none;
-    }
-
-    .cta svg {
-      width: 1.05rem;
-      height: 1.05rem;
-      transition: transform 0.25s ease;
-    }
-
-    .cta:hover svg,
-    .cta:focus-visible svg {
-      transform: translateX(3px);
-    }
-
-    @keyframes rise {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .atmosphere,
-      .brand,
-      .headline,
-      .lede,
-      .cta {
-        animation: none;
-        opacity: 1;
-        transform: none;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <div class="atmosphere" aria-hidden="true"></div>
-  <main class="hero">
+  <header class="site-header">
+    <a class="logo" href="/">Ritik Yadav</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/about.html">About</a>
+      <a href="/works.html">Works</a>
+      <a href="/social.html">Social</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </header>
+  <main class="shell hero">
     <h1 class="brand">Ritik Yadav</h1>
     <p class="headline">Welcome.</p>
-    <p class="lede">A quiet corner of the internet — more coming soon.</p>
-    <a class="cta" href="mailto:hello@ritikyadav.us">
-      Say hello
-      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+    <p class="lede">A quiet corner of the internet for projects, notes, and saying hello.</p>
+    <div class="cta-row">
+      <a class="cta" href="/works.html">
+        See works
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a class="cta" href="/contact.html">
+        Contact
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
   </main>
 </body>
 </html>
