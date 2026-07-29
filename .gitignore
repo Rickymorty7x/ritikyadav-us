@@ -3,3 +3,7 @@ dist
 .DS_Store
 *.log
 .vite
+api/node_modules
+api/data
+.env
+.env.*

@@ -8,11 +8,33 @@ import {
   PROFILE,
   REACTIONS,
 } from "./data.js";
+import { apiFetch } from "../shared/api.js";
 
 export function SocialApp() {
   const [tab, setTab] = useState("posts");
   const [state, setState] = useState(getInitialSocialState);
   const [toast, setToast] = useState("");
+  const [source, setSource] = useState("local");
+
+  useEffect(() => {
+    let cancelled = false;
+    apiFetch("/api/posts")
+      .then((data) => {
+        if (cancelled || !Array.isArray(data.posts)) return;
+        setState((prev) => {
+          const next = { posts: data.posts, mine: prev.mine || {} };
+          persistSocialState(next);
+          return next;
+        });
+        setSource("api");
+      })
+      .catch(() => {
+        if (!cancelled) setSource("local");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     persistSocialState(state);
@@ -39,6 +61,8 @@ export function SocialApp() {
   function toggleReaction(postId, key) {
     setState((prev) => {
       const current = prev.mine[postId];
+      const delta = current === key ? -1 : 1;
+      const previousKey = current && current !== key ? current : null;
       const posts = prev.posts.map((post) => {
         if (post.id !== postId) return post;
         const reactions = { ...post.reactions };
@@ -55,6 +79,26 @@ export function SocialApp() {
       const mine = { ...prev.mine };
       if (current === key) delete mine[postId];
       else mine[postId] = key;
+
+      if (source === "api") {
+        const ops = [];
+        if (previousKey) {
+          ops.push(
+            apiFetch(`/api/posts/${postId}/react`, {
+              method: "POST",
+              body: { key: previousKey, delta: -1 },
+            }).catch(() => null)
+          );
+        }
+        ops.push(
+          apiFetch(`/api/posts/${postId}/react`, {
+            method: "POST",
+            body: { key, delta },
+          }).catch(() => null)
+        );
+        Promise.all(ops);
+      }
+
       return { posts, mine };
     });
   }

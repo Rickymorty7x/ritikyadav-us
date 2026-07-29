@@ -15,6 +15,7 @@ export default defineConfig({
         works: resolve(__dirname, "works.html"),
         social: resolve(__dirname, "social.html"),
         contact: resolve(__dirname, "contact.html"),
+        admin: resolve(__dirname, "admin.html"),
         notFound: resolve(__dirname, "404.html"),
       },
     },

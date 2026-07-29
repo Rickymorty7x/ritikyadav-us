@@ -1,0 +1,154 @@
+.admin-app {
+  opacity: 0;
+  transform: translateY(0.8rem);
+  animation: admin-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.admin-app .page-title,
+.admin-app .page-lede {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+.admin-app .page-title {
+  margin-top: clamp(1.5rem, 5vw, 3rem);
+}
+
+.admin-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+}
+
+.admin-card,
+.admin-list {
+  margin-top: 1.75rem;
+  max-width: 42rem;
+}
+
+.admin-card {
+  display: grid;
+  gap: 0.95rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.admin-card h2,
+.admin-list h2 {
+  font-family: "Bricolage Grotesque", sans-serif;
+  color: var(--brand);
+  letter-spacing: -0.02em;
+  font-size: 1.35rem;
+}
+
+.admin-card label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.admin-card input,
+.admin-card textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--ink);
+  font: inherit;
+  padding: 0.85rem 0.95rem;
+}
+
+.admin-card input:focus,
+.admin-card textarea:focus {
+  outline: none;
+  border-color: var(--sea);
+}
+
+.button-quiet {
+  background: transparent;
+  color: var(--sea);
+  border: 1px solid var(--line);
+}
+
+.button-quiet:hover,
+.button-quiet:focus-visible {
+  background: rgba(200, 230, 216, 0.45);
+  color: var(--brand);
+}
+
+.admin-error {
+  color: #8a2f2f;
+  font-weight: 600;
+}
+
+.admin-notice {
+  color: var(--sea);
+  font-weight: 600;
+}
+
+.admin-post {
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.admin-post:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-post-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin-bottom: 0.55rem;
+}
+
+.admin-post p {
+  color: var(--ink);
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+.admin-post-actions {
+  margin-top: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.danger {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #8a2f2f;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-empty {
+  color: var(--muted);
+  margin-top: 0.75rem;
+}
+
+@keyframes admin-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-app {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
