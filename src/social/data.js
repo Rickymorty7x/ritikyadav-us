@@ -5,6 +5,15 @@ const PROFILE = {
   bio: "Making clear products and calm corners of the internet. Projects, notes, and conversations welcome.",
   location: "On the web",
   joined: "Joined July 2026",
+  // Update these hrefs with your real profile URLs anytime.
+  socials: [
+    { id: "github", label: "GitHub", href: "https://github.com/Rickymorty7x" },
+    { id: "x", label: "X", href: "https://x.com/" },
+    { id: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/" },
+    { id: "instagram", label: "Instagram", href: "https://www.instagram.com/" },
+    { id: "email", label: "Email", href: "mailto:hello@ritikyadav.us" },
+    { id: "website", label: "Website", href: "https://ritikyadav.us" },
+  ],
   links: [
     { label: "Website", href: "https://ritikyadav.us" },
     { label: "GitHub", href: "https://github.com/Rickymorty7x" },

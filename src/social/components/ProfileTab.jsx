@@ -1,4 +1,5 @@
 import { PROFILE } from "../data.js";
+import { SocialLinks } from "./SocialLinks.jsx";
 
 export function ProfileTab({ totals, postCount }) {
   return (
@@ -18,6 +19,7 @@ export function ProfileTab({ totals, postCount }) {
             <span aria-hidden="true">·</span>
             <span>{PROFILE.joined}</span>
           </p>
+          <SocialLinks profiles={PROFILE.socials} compact />
         </div>
       </div>
 

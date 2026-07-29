@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { ProfileTab } from "./components/ProfileTab.jsx";
 import { PostsTab } from "./components/PostsTab.jsx";
+import { SocialLinks } from "./components/SocialLinks.jsx";
 import {
   getInitialSocialState,
   persistSocialState,
+  PROFILE,
   REACTIONS,
 } from "./data.js";
 
@@ -88,6 +90,7 @@ export function SocialApp() {
         <p className="page-lede">
           Posts with reactions and sharing — plus a profile tab for the short version of me.
         </p>
+        <SocialLinks profiles={PROFILE.socials} />
       </header>
 
       <div className="social-tabs" role="tablist" aria-label="Social sections">
