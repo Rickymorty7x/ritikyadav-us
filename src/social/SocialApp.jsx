@@ -90,7 +90,6 @@ export function SocialApp() {
         <p className="page-lede">
           Posts with reactions and sharing — plus a profile tab for the short version of me.
         </p>
-        <SocialLinks profiles={PROFILE.socials} />
       </header>
 
       <div className="social-tabs" role="tablist" aria-label="Social sections">
@@ -126,6 +125,11 @@ export function SocialApp() {
           <ProfileTab totals={totals} postCount={state.posts.length} />
         )}
       </div>
+
+      <section className="social-footer-links" aria-label="Find me online">
+        <p className="social-footer-label">Find me on</p>
+        <SocialLinks profiles={PROFILE.socials} />
+      </section>
 
       {toast ? (
         <div className="social-toast" role="status" aria-live="polite">

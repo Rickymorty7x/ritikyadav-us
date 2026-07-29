@@ -16,10 +16,25 @@
 }
 
 .social-icons {
-  margin-top: 1.35rem;
+  margin-top: 0.85rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
+}
+
+.social-footer-links {
+  margin-top: clamp(2.5rem, 6vw, 3.75rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  max-width: 42rem;
+}
+
+.social-footer-label {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--brand);
 }
 
 .social-icons.is-compact {
