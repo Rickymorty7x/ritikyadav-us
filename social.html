@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Social profiles and posts from Ritik Yadav." />
+  <meta name="description" content="Social posts, reactions, and profile — Ritik Yadav." />
   <title>Social — Ritik Yadav</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=3" />
+  <link rel="stylesheet" href="/styles.css?v=4" />
 </head>
 <body>
   <div class="atmosphere" aria-hidden="true"></div>
@@ -23,33 +23,12 @@
     </nav>
   </header>
   <main class="shell">
-    <h1 class="page-title">Social</h1>
-    <p class="page-lede">Where to find me online, plus short updates worth keeping here.</p>
-    <div class="social-links">
-      <a href="https://github.com/Rickymorty7x" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="mailto:hello@ritikyadav.us">Email</a>
-    </div>
-    <div class="stack">
-      <article class="stack-item">
-        <span class="stack-meta">July 2026</span>
-        <h2 class="stack-kicker">Site is live</h2>
-        <p class="stack-copy">ritikyadav.us launched with About, Works, Social, and Contact — a quiet base to grow from.</p>
-      </article>
-      <article class="stack-item">
-        <span class="stack-meta">Update</span>
-        <h2 class="stack-kicker">Email routing on</h2>
-        <p class="stack-copy">hello@ritikyadav.us now forwards through Cloudflare Email Routing. Prefer the Contact page if you want to write.</p>
-      </article>
-      <article class="stack-item">
-        <span class="stack-meta">Open slot</span>
-        <h2 class="stack-kicker">Next note</h2>
-        <p class="stack-copy">This line is ready for the next announcement, thread, or link you want pinned on the site.</p>
-      </article>
-    </div>
+    <div id="social-root"></div>
   </main>
   <footer class="site-footer">
     <span>© 2026 Ritik Yadav</span>
     <a href="mailto:hello@ritikyadav.us">hello@ritikyadav.us</a>
   </footer>
+  <script type="module" src="/src/social/main.jsx"></script>
 </body>
 </html>
