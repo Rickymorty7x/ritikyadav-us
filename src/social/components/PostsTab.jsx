@@ -25,6 +25,12 @@ export function PostsTab({ posts, mine, onReact, onShare }) {
 
           <p className="post-text">{post.text}</p>
 
+          {post.imageUrl ? (
+            <figure className="post-media">
+              <img src={post.imageUrl} alt="" loading="lazy" />
+            </figure>
+          ) : null}
+
           {post.tags?.length ? (
             <ul className="post-tags">
               {post.tags.map((tag) => (

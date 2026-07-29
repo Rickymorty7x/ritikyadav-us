@@ -7,3 +7,4 @@ api/node_modules
 api/data
 .env
 .env.*
+api/uploads

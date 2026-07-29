@@ -1,5 +1,10 @@
 import express from "express";
 import cors from "cors";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import multer from "multer";
+import { nanoid } from "nanoid";
 import {
   createSession,
   createUser,
@@ -19,9 +24,35 @@ import {
   updatePost,
 } from "./posts.js";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const uploadsDir = path.join(__dirname, "..", "uploads");
+fs.mkdirSync(uploadsDir, { recursive: true });
+
 const app = express();
 const PORT = Number(process.env.PORT || 8787);
 const ORIGIN = process.env.CORS_ORIGIN || "*";
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname || "").toLowerCase() || ".jpg";
+    const safeExt = [".jpg", ".jpeg", ".png", ".gif", ".webp"].includes(ext)
+      ? ext
+      : ".jpg";
+    cb(null, `${Date.now()}-${nanoid(8)}${safeExt}`);
+  },
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Only image uploads are allowed"));
+    }
+    cb(null, true);
+  },
+});
 
 app.use(
   cors({
@@ -29,7 +60,21 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json({ limit: "2mb" }));
+app.use("/uploads", express.static(uploadsDir, { maxAge: "7d" }));
+
+function absoluteUploadUrl(req, filename) {
+  const base = process.env.PUBLIC_API_URL || `${req.protocol}://${req.get("host")}`;
+  return `${String(base).replace(/\/$/, "")}/uploads/${filename}`;
+}
+
+function parseTags(input) {
+  if (Array.isArray(input)) return input.map(String).map((t) => t.trim()).filter(Boolean);
+  return String(input || "")
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
+}
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "ritikyadav-api" });
@@ -92,40 +137,52 @@ app.get("/api/posts/:id", (req, res) => {
   res.json({ post });
 });
 
-app.post("/api/posts", requireAuth, (req, res) => {
+app.post("/api/uploads", requireAuth, upload.single("image"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "Image file required" });
+  res.status(201).json({
+    imageUrl: absoluteUploadUrl(req, req.file.filename),
+    filename: req.file.filename,
+  });
+});
+
+app.post("/api/posts", requireAuth, upload.single("image"), (req, res) => {
   const text = String(req.body?.text || "").trim();
   if (!text) return res.status(400).json({ error: "Post text is required" });
-  const tags = Array.isArray(req.body?.tags)
-    ? req.body.tags.map(String)
-    : String(req.body?.tags || "")
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean);
+  const tags = parseTags(req.body?.tags);
+  let imageUrl = String(req.body?.imageUrl || "").trim() || null;
+  if (req.file) {
+    imageUrl = absoluteUploadUrl(req, req.file.filename);
+  }
   const post = createPost({
     author: req.body?.author || req.user.display_name,
     handle: req.body?.handle || `@${req.user.username}`,
     text,
     tags,
-    published: req.body?.published !== false,
+    imageUrl,
+    published: String(req.body?.published || "true") !== "false",
   });
   res.status(201).json({ post });
 });
 
-app.put("/api/posts/:id", requireAuth, (req, res) => {
-  const tags = req.body?.tags
-    ? Array.isArray(req.body.tags)
-      ? req.body.tags.map(String)
-      : String(req.body.tags)
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean)
-    : undefined;
+app.put("/api/posts/:id", requireAuth, upload.single("image"), (req, res) => {
+  const tags = req.body?.tags !== undefined ? parseTags(req.body.tags) : undefined;
+  let imageUrl = req.body?.imageUrl;
+  if (req.file) {
+    imageUrl = absoluteUploadUrl(req, req.file.filename);
+  }
+  if (req.body?.clearImage === "1" || req.body?.clearImage === true) {
+    imageUrl = null;
+  }
   const post = updatePost(req.params.id, {
     text: req.body?.text,
     tags,
-    published: req.body?.published,
+    published:
+      req.body?.published === undefined
+        ? undefined
+        : String(req.body.published) !== "false",
     author: req.body?.author,
     handle: req.body?.handle,
+    imageUrl,
   });
   if (!post) return res.status(404).json({ error: "Post not found" });
   res.json({ post });
@@ -150,7 +207,7 @@ app.post("/api/posts/:id/react", (req, res) => {
 
 app.use((err, _req, res, _next) => {
   console.error(err);
-  res.status(500).json({ error: "Server error" });
+  res.status(400).json({ error: err.message || "Server error" });
 });
 
 export function ensureSeedAdmin() {

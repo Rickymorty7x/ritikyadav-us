@@ -20,15 +20,21 @@ export async function resolveApiUrl() {
   return loading;
 }
 
-export async function apiFetch(path, { token, method = "GET", body } = {}) {
+export async function apiFetch(path, { token, method = "GET", body, formData } = {}) {
   const base = await resolveApiUrl();
   const headers = { Accept: "application/json" };
-  if (body !== undefined) headers["Content-Type"] = "application/json";
   if (token) headers.Authorization = `Bearer ${token}`;
+  let payload;
+  if (formData) {
+    payload = formData;
+  } else if (body !== undefined) {
+    headers["Content-Type"] = "application/json";
+    payload = JSON.stringify(body);
+  }
   const res = await fetch(`${base}${path}`, {
     method,
     headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    body: payload,
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {

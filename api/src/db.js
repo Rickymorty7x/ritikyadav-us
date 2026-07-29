@@ -35,6 +35,7 @@ db.exec(`
     handle TEXT NOT NULL,
     text TEXT NOT NULL,
     tags TEXT NOT NULL DEFAULT '[]',
+    image_url TEXT,
     likes INTEGER NOT NULL DEFAULT 0,
     fire INTEGER NOT NULL DEFAULT 0,
     idea INTEGER NOT NULL DEFAULT 0,
@@ -43,6 +44,11 @@ db.exec(`
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
 `);
+
+const postCols = db.prepare("PRAGMA table_info(posts)").all().map((c) => c.name);
+if (!postCols.includes("image_url")) {
+  db.exec("ALTER TABLE posts ADD COLUMN image_url TEXT");
+}
 
 export function rowToPost(row) {
   if (!row) return null;
@@ -53,6 +59,7 @@ export function rowToPost(row) {
     time: formatTime(row.created_at),
     text: row.text,
     tags: JSON.parse(row.tags || "[]"),
+    imageUrl: row.image_url || null,
     reactions: {
       like: row.likes,
       fire: row.fire,

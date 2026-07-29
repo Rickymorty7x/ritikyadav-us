@@ -11,6 +11,8 @@ export function AdminApp() {
   const [password, setPassword] = useState("");
   const [text, setText] = useState("");
   const [tags, setTags] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
@@ -31,6 +33,16 @@ export function AdminApp() {
         setUser(null);
       });
   }, [token]);
+
+  useEffect(() => {
+    if (!imageFile) {
+      setImagePreview("");
+      return undefined;
+    }
+    const url = URL.createObjectURL(imageFile);
+    setImagePreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [imageFile]);
 
   async function refreshPosts(activeToken = token) {
     const data = await apiFetch("/api/posts?all=1", { token: activeToken });
@@ -75,20 +87,27 @@ export function AdminApp() {
     setBusy(true);
     setError("");
     try {
+      const formData = new FormData();
+      formData.append("text", text);
+      formData.append(
+        "tags",
+        tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean)
+          .join(",")
+      );
+      if (imageFile) formData.append("image", imageFile);
+      const hadImage = Boolean(imageFile);
       await apiFetch("/api/posts", {
         method: "POST",
         token,
-        body: {
-          text,
-          tags: tags
-            .split(",")
-            .map((t) => t.trim())
-            .filter(Boolean),
-        },
+        formData,
       });
       setText("");
       setTags("");
-      setNotice("Post published");
+      setImageFile(null);
+      setNotice(hadImage ? "Post published with picture" : "Post published");
       await refreshPosts();
     } catch (err) {
       setError(err.message);
@@ -156,6 +175,22 @@ export function AdminApp() {
           Tags (comma separated)
           <input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="launch, update" />
         </label>
+        <label className="image-field">
+          Picture
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+          />
+        </label>
+        {imagePreview ? (
+          <div className="image-preview">
+            <img src={imagePreview} alt="Selected preview" />
+            <button type="button" className="danger" onClick={() => setImageFile(null)}>
+              Remove picture
+            </button>
+          </div>
+        ) : null}
         {error ? <p className="admin-error">{error}</p> : null}
         {notice ? <p className="admin-notice">{notice}</p> : null}
         <button className="button" type="submit" disabled={busy}>
@@ -173,6 +208,9 @@ export function AdminApp() {
               <span>{post.published ? "Published" : "Draft"}</span>
             </div>
             <p>{post.text}</p>
+            {post.imageUrl ? (
+              <img className="admin-post-image" src={post.imageUrl} alt="" />
+            ) : null}
             <div className="admin-post-actions">
               <span>
                 ♥ {post.reactions.like} · ✦ {post.reactions.fire} · ◎ {post.reactions.idea}

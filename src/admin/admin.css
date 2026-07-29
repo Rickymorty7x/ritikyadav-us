@@ -61,6 +61,31 @@
   padding: 0.85rem 0.95rem;
 }
 
+.image-field input[type="file"] {
+  padding: 0.65rem 0;
+  border: 0;
+  background: transparent;
+}
+
+.image-preview {
+  display: grid;
+  gap: 0.65rem;
+  justify-items: start;
+}
+
+.image-preview img,
+.admin-post-image {
+  display: block;
+  width: min(100%, 28rem);
+  max-height: 18rem;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+
+.admin-post-image {
+  margin-top: 0.85rem;
+}
+
 .admin-card input:focus,
 .admin-card textarea:focus {
   outline: none;

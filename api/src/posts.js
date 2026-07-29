@@ -18,18 +18,38 @@ export function getPost(id) {
   return rowToPost(db.prepare("SELECT * FROM posts WHERE id = ?").get(id));
 }
 
-export function createPost({ author, handle, text, tags = [], published = true }) {
+export function createPost({
+  author,
+  handle,
+  text,
+  tags = [],
+  imageUrl = null,
+  published = true,
+}) {
   const id = nanoid(10);
   db.prepare(
-    `INSERT INTO posts (id, author, handle, text, tags, published)
-     VALUES (?, ?, ?, ?, ?, ?)`
-  ).run(id, author, handle, text, JSON.stringify(tags), published ? 1 : 0);
+    `INSERT INTO posts (id, author, handle, text, tags, image_url, published)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    id,
+    author,
+    handle,
+    text,
+    JSON.stringify(tags),
+    imageUrl || null,
+    published ? 1 : 0
+  );
   return getPost(id);
 }
 
-export function updatePost(id, { text, tags, published, author, handle }) {
+export function updatePost(
+  id,
+  { text, tags, published, author, handle, imageUrl }
+) {
   const existing = db.prepare("SELECT * FROM posts WHERE id = ?").get(id);
   if (!existing) return null;
+  const nextImage =
+    imageUrl === undefined ? existing.image_url : imageUrl || null;
   db.prepare(
     `UPDATE posts SET
       text = ?,
@@ -37,6 +57,7 @@ export function updatePost(id, { text, tags, published, author, handle }) {
       published = ?,
       author = ?,
       handle = ?,
+      image_url = ?,
       updated_at = datetime('now')
      WHERE id = ?`
   ).run(
@@ -45,6 +66,7 @@ export function updatePost(id, { text, tags, published, author, handle }) {
     published === undefined ? existing.published : published ? 1 : 0,
     author ?? existing.author,
     handle ?? existing.handle,
+    nextImage,
     id
   );
   return getPost(id);
