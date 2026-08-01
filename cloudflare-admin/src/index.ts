@@ -181,7 +181,7 @@ function pageDocument(page: { slug: string; title: string; excerpt: string; body
 <body class="${isMissing ? 'not-found-page' : 'detail-page'}">
   <header class="nav-wrap">
     <nav class="nav glass" aria-label="Main navigation">
-      <a href="/" class="logo"><span class="logo-dot"></span>Ritik<span class="logo-sub">.us</span></a>
+      <a href="/" class="logo"><span class="logo-dot"></span>RitikYadav<span class="logo-sub">.us</span></a>
       <ul class="nav-links">
         <li><a href="/#about">About</a></li><li><a href="/skills.html">Skills</a></li><li><a href="/projects.html">Projects</a></li><li><a href="/social.html">Social</a></li><li><a href="/blog.html">Blog</a></li><li><a href="/contact.html">Contact</a></li>
       </ul>
