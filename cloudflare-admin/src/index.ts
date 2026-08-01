@@ -1,4 +1,5 @@
-import { ADMIN_CSS, ADMIN_HTML, ADMIN_JS, LOGIN_JS, loginHtml } from './admin-ui';
+import { ADMIN_CSS, ADMIN_HTML, ADMIN_JS } from './admin-dashboard';
+import { LOGIN_JS, loginHtml } from './admin-ui';
 import { asset, html, json, methodNotAllowed, publicJson, redirect } from './responses';
 import {
   CSRF_COOKIE,
