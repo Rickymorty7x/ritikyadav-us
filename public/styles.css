@@ -3,7 +3,7 @@
   --muted: #69695f;
   --brand: #171713;
   --sea: #5b4bff;
-  --acid: #dfff38;
+  --acid: #dfe8a8;
   --paper: #f5f2e9;
   --white: #fffef9;
   --line: rgba(23, 23, 19, .17);
@@ -29,7 +29,7 @@ a { color: inherit; }
   pointer-events: none;
   background:
     radial-gradient(circle at 12% 22%, rgba(91,75,255,.12), transparent 24rem),
-    radial-gradient(circle at 88% 78%, rgba(223,255,56,.18), transparent 22rem),
+    radial-gradient(circle at 88% 78%, rgba(223,232,168,.16), transparent 22rem),
     linear-gradient(rgba(23,23,19,.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(23,23,19,.035) 1px, transparent 1px);
   background-size: auto, auto, 32px 32px, 32px 32px;
@@ -103,14 +103,14 @@ a { color: inherit; }
 .brand, .page-title {
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 700;
-  line-height: .82;
-  letter-spacing: -.075em;
+  line-height: .92;
+  letter-spacing: -.06em;
   color: var(--brand);
   text-wrap: balance;
   animation: rise .75s cubic-bezier(.22,1,.36,1) both;
 }
-.brand { max-width: 9ch; font-size: clamp(5rem, 16vw, 12.5rem); }
-.page-title { max-width: 11ch; font-size: clamp(4.25rem, 11vw, 8.5rem); }
+.brand { max-width: 11ch; font-size: clamp(4.25rem, 12vw, 9rem); }
+.page-title { max-width: 11ch; font-size: clamp(3.75rem, 9vw, 7rem); }
 .headline {
   max-width: 20ch;
   margin-top: 2rem;
@@ -185,7 +185,7 @@ a { color: inherit; }
   transition: transform .25s ease, background .25s ease;
 }
 .stack-item:first-child { grid-column: span 7; background: var(--ink); color: var(--white); }
-.stack-item:nth-child(2) { grid-column: span 5; background: var(--acid); }
+.stack-item:nth-child(2) { grid-column: span 5; background: #e9eddf; }
 .stack-item:last-child { grid-column: span 12; min-height: 12rem; }
 a.stack-item:hover, a.stack-item:focus-visible { transform: translateY(-6px) rotate(-.4deg); outline: none; }
 .stack-meta { color: var(--sea); font-size: .75rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
@@ -225,7 +225,8 @@ a.stack-item:hover, a.stack-item:focus-visible { transform: translateY(-6px) rot
   .nav { justify-content: flex-end; flex-wrap: wrap; }
   .nav a { padding: .45rem .58rem; font-size: .78rem; }
   .shell { padding-top: 4rem; }
-  .brand { font-size: clamp(4.2rem, 25vw, 7rem); }
+  .brand { font-size: clamp(3.65rem, 18vw, 5.6rem); line-height: .94; }
+  .page-title { font-size: clamp(3.35rem, 16vw, 5.25rem); }
   .stack-item, .stack-item:first-child, .stack-item:nth-child(2), .stack-item:last-child { grid-column: 1 / -1; min-height: 14rem; }
   .site-footer { flex-direction: column; }
 }
