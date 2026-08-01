@@ -26,7 +26,7 @@ contactComposer?.addEventListener('submit', (event) => {
   const body = `${message}\n\nFrom: ${name}\nReply to: ${email}`;
   const status = document.getElementById('contactComposerStatus');
   if (status) status.textContent = 'Opening your email app with the message ready…';
-  window.location.href = `mailto:hello@ritik.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = `mailto:me@ritikyadav.us?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
 
 // Reveal-on-scroll with late-bound cards (blog + projects may render after fetch)
