@@ -2,6 +2,22 @@
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+// Privacy-conscious first-party traffic analytics. The server only keeps
+// aggregate page/day counts and a salted, day-scoped visitor fingerprint.
+(() => {
+  if (window.location.hostname !== 'ritikyadav.us') return;
+  const path = window.location.pathname.replace(/\/{2,}/g, '/').slice(0, 300) || '/';
+  fetch('/api/analytics/pageview', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    keepalive: true,
+    body: JSON.stringify({ path })
+  }).catch(() => {
+    // Analytics must never interfere with the public website.
+  });
+})();
+
 // Mobile nav toggle
 const toggle = document.querySelector('.nav-toggle');
 const links = document.querySelector('.nav-links');

@@ -58,6 +58,7 @@ const SESSION_IDLE_SECONDS = 45 * 60;
 const GATE_ENTRY_SECONDS = 3 * 60;
 const GATE_BROWSER_SECONDS = 5 * 60;
 const TURNSTILE_ACTION = 'turnstile-spin-v2';
+const SECURITY_BUCKET_SECONDS = 5 * 60;
 
 function now(): number {
   return Math.floor(Date.now() / 1000);
@@ -152,23 +153,63 @@ async function audit(request: Request, env: Env, adminId: number | null, action:
     .bind(adminId, action, entityType, entityId, fingerprint.ipHash, fingerprint.userAgentHash, JSON.stringify(detail), now()).run();
 }
 
+async function securityEvent(
+  request: Request,
+  env: Env,
+  kind: string,
+  severity: 'low' | 'medium' | 'high' | 'critical',
+  detail: Record<string, unknown> = {},
+): Promise<void> {
+  const timestamp = now();
+  const fingerprint = await requestFingerprint(request, env.AUTH_PEPPER);
+  const url = new URL(request.url);
+  const bucket = Math.floor(timestamp / SECURITY_BUCKET_SECONDS);
+  await env.DB.prepare(`INSERT INTO security_events
+    (kind, severity, path, method, ip_hash, user_agent_hash, detail, occurrence_count, bucket, first_seen_at, last_seen_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
+    ON CONFLICT(kind, ip_hash, bucket) DO UPDATE SET
+      occurrence_count = occurrence_count + 1,
+      severity = excluded.severity,
+      path = excluded.path,
+      method = excluded.method,
+      detail = excluded.detail,
+      last_seen_at = excluded.last_seen_at,
+      acknowledged_at = NULL`)
+    .bind(kind, severity, url.pathname.slice(0, 300), request.method, fingerprint.ipHash, fingerprint.userAgentHash, JSON.stringify(detail), bucket, timestamp, timestamp).run();
+}
+
+function utcDay(offsetDays = 0): string {
+  const date = new Date(Date.now() + offsetDays * 86_400_000);
+  return date.toISOString().slice(0, 10);
+}
+
 async function cleanup(env: Env): Promise<void> {
   const timestamp = now();
   await env.DB.batch([
     env.DB.prepare('DELETE FROM gate_tokens WHERE expires_at < ?').bind(timestamp - 3600),
     env.DB.prepare('DELETE FROM sessions WHERE expires_at < ? OR revoked_at < ?').bind(timestamp - 86400, timestamp - 86400 * 30),
     env.DB.prepare('DELETE FROM login_attempts WHERE created_at < ?').bind(timestamp - 86400 * 7),
+    env.DB.prepare('DELETE FROM analytics_visitors WHERE day < ?').bind(utcDay(-31)),
+    env.DB.prepare('DELETE FROM analytics_daily WHERE day < ?').bind(utcDay(-400)),
+    env.DB.prepare('DELETE FROM security_events WHERE acknowledged_at IS NOT NULL AND last_seen_at < ?').bind(timestamp - 86400 * 90),
+    env.DB.prepare('DELETE FROM security_events WHERE last_seen_at < ?').bind(timestamp - 86400 * 365),
   ]);
 }
 
 async function issueGateway(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') return methodNotAllowed('POST');
-  if (!sameOrigin(request)) return json({ error: 'Unavailable.' }, 404);
+  if (!sameOrigin(request)) {
+    await securityEvent(request, env, 'cross_origin_gateway', 'medium');
+    return json({ error: 'Unavailable.' }, 404);
+  }
   const fingerprint = await requestFingerprint(request, env.AUTH_PEPPER);
   const timestamp = now();
   const recent = await env.DB.prepare('SELECT COUNT(*) AS count FROM gate_tokens WHERE ip_hash = ? AND created_at > ?')
     .bind(fingerprint.ipHash, timestamp - 300).first<{ count: number }>();
-  if ((recent?.count || 0) >= 12) return json({ error: 'Please wait before trying again.' }, 429, { 'Retry-After': '300' });
+  if ((recent?.count || 0) >= 12) {
+    await securityEvent(request, env, 'gateway_rate_limited', 'high', { windowSeconds: 300 });
+    return json({ error: 'Please wait before trying again.' }, 429, { 'Retry-After': '300' });
+  }
   const rawToken = randomToken();
   await env.DB.prepare('INSERT INTO gate_tokens (id_hash, ip_hash, created_at, expires_at) VALUES (?, ?, ?, ?)')
     .bind(await sha256(rawToken), fingerprint.ipHash, timestamp, timestamp + GATE_ENTRY_SECONDS).run();
@@ -178,13 +219,19 @@ async function issueGateway(request: Request, env: Env): Promise<Response> {
 async function enterGateway(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'GET') return methodNotAllowed('GET');
   const rawToken = new URL(request.url).searchParams.get('gate') || '';
-  if (rawToken.length < 32 || rawToken.length > 128) return redirect('/');
+  if (rawToken.length < 32 || rawToken.length > 128) {
+    await securityEvent(request, env, 'malformed_private_entry', 'low');
+    return redirect('/');
+  }
   const fingerprint = await requestFingerprint(request, env.AUTH_PEPPER);
   const timestamp = now();
   const tokenHash = await sha256(rawToken);
   const gate = await env.DB.prepare('SELECT id_hash FROM gate_tokens WHERE id_hash = ? AND ip_hash = ? AND expires_at > ? AND consumed_at IS NULL')
     .bind(tokenHash, fingerprint.ipHash, timestamp).first<{ id_hash: string }>();
-  if (!gate) return redirect('/');
+  if (!gate) {
+    await securityEvent(request, env, 'invalid_private_entry', 'high');
+    return redirect('/');
+  }
   const browserToken = randomToken();
   await env.DB.prepare('UPDATE gate_tokens SET browser_hash = ?, consumed_at = ?, expires_at = ? WHERE id_hash = ? AND consumed_at IS NULL')
     .bind(await sha256(browserToken), timestamp, timestamp + GATE_BROWSER_SECONDS, tokenHash).run();
@@ -293,7 +340,10 @@ async function login(request: Request, env: Env): Promise<Response> {
   const timestamp = now();
   const failures = await env.DB.prepare('SELECT COUNT(*) AS count FROM login_attempts WHERE ip_hash = ? AND username_hash = ? AND success = 0 AND created_at > ?')
     .bind(fingerprint.ipHash, usernameHash, timestamp - 900).first<{ count: number }>();
-  if ((failures?.count || 0) >= 5) return json({ error: 'Too many attempts. Try again later.' }, 429, { 'Retry-After': '900' });
+  if ((failures?.count || 0) >= 5) {
+    await securityEvent(request, env, 'login_rate_limited', 'critical', { windowSeconds: 900 });
+    return json({ error: 'Too many attempts. Try again later.' }, 429, { 'Retry-After': '900' });
+  }
 
   const human = await validateTurnstile(request, env, turnstileToken);
   let admin: AdminRow | null = null;
@@ -304,6 +354,7 @@ async function login(request: Request, env: Env): Promise<Response> {
   await env.DB.prepare('INSERT INTO login_attempts (ip_hash, username_hash, success, created_at) VALUES (?, ?, ?, ?)')
     .bind(fingerprint.ipHash, usernameHash, admin ? 1 : 0, timestamp).run();
   if (!admin) {
+    await securityEvent(request, env, human ? 'invalid_credentials' : 'turnstile_rejected', human ? 'high' : 'medium');
     await audit(request, env, null, 'login_failed', 'session', null);
     return json({ error: 'Sign-in failed.' }, 401);
   }
@@ -423,6 +474,83 @@ async function changePassword(request: Request, env: Env, session: SessionRow): 
   return json({ ok: true });
 }
 
+async function trackPageview(request: Request, env: Env): Promise<Response> {
+  if (request.method !== 'POST') return methodNotAllowed('POST');
+  if (!sameOrigin(request)) return publicJson({ error: 'Unavailable.' }, 404);
+  let body: Record<string, unknown>;
+  try { body = await readJson(request, 2_000); } catch { return publicJson({ error: 'Invalid request.' }, 400); }
+  const rawPath = typeof body.path === 'string' ? body.path.trim() : '';
+  if (!rawPath.startsWith('/') || rawPath.startsWith('/admin') || rawPath.length > 300 || /[?#\u0000-\u001f]/.test(rawPath)) {
+    return publicJson({ error: 'Invalid path.' }, 400);
+  }
+  const path = rawPath.replace(/\/{2,}/g, '/');
+  const day = utcDay();
+  const timestamp = now();
+  const fingerprint = await requestFingerprint(request, env.AUTH_PEPPER);
+  const visitorHash = await sha256(`${env.AUTH_PEPPER}:visitor:${day}:${fingerprint.ipHash}`);
+  await env.DB.batch([
+    env.DB.prepare(`INSERT INTO analytics_daily (day, path, views, last_seen_at) VALUES (?, ?, 1, ?)
+      ON CONFLICT(day, path) DO UPDATE SET views = views + 1, last_seen_at = excluded.last_seen_at`).bind(day, path, timestamp),
+    env.DB.prepare('INSERT OR IGNORE INTO analytics_visitors (day, visitor_hash, created_at) VALUES (?, ?, ?)').bind(day, visitorHash, timestamp),
+  ]);
+  return publicJson({ ok: true }, 202);
+}
+
+async function overviewData(env: Env): Promise<Response> {
+  const startDay = utcDay(-29);
+  const sevenDay = utcDay(-6);
+  const timestamp = now();
+  const dailyViews = await env.DB.prepare(`SELECT day, SUM(views) AS views FROM analytics_daily
+    WHERE day >= ? GROUP BY day ORDER BY day ASC`).bind(startDay).all<{ day: string; views: number }>();
+  const dailyVisitors = await env.DB.prepare(`SELECT day, COUNT(*) AS visitors FROM analytics_visitors
+    WHERE day >= ? GROUP BY day ORDER BY day ASC`).bind(startDay).all<{ day: string; visitors: number }>();
+  const topPages = await env.DB.prepare(`SELECT path, SUM(views) AS views FROM analytics_daily
+    WHERE day >= ? GROUP BY path ORDER BY views DESC, path ASC LIMIT 6`).bind(sevenDay).all<{ path: string; views: number }>();
+  const securitySummary = await env.DB.prepare(`SELECT
+      COALESCE(SUM(CASE WHEN last_seen_at >= ? THEN occurrence_count ELSE 0 END), 0) AS attempts_24h,
+      COALESCE(SUM(CASE WHEN acknowledged_at IS NULL THEN 1 ELSE 0 END), 0) AS unread,
+      COALESCE(SUM(CASE WHEN acknowledged_at IS NULL AND severity IN ('high', 'critical') THEN 1 ELSE 0 END), 0) AS urgent
+    FROM security_events`).bind(timestamp - 86400).first<{ attempts_24h: number; unread: number; urgent: number }>();
+  const securityItems = await env.DB.prepare(`SELECT id, kind, severity, path, method, detail, occurrence_count, first_seen_at, last_seen_at, acknowledged_at
+    FROM security_events ORDER BY acknowledged_at IS NULL DESC, last_seen_at DESC, id DESC LIMIT 8`).all<{
+      id: number; kind: string; severity: string; path: string; method: string; detail: string; occurrence_count: number; first_seen_at: number; last_seen_at: number; acknowledged_at: number | null;
+    }>();
+  const viewMap = new Map(dailyViews.results.map((row) => [row.day, Number(row.views)]));
+  const visitorMap = new Map(dailyVisitors.results.map((row) => [row.day, Number(row.visitors)]));
+  const daily = Array.from({ length: 30 }, (_, index) => {
+    const day = utcDay(index - 29);
+    return { day, views: viewMap.get(day) || 0, visitors: visitorMap.get(day) || 0 };
+  });
+  const today = daily[daily.length - 1];
+  const previous = daily[daily.length - 2];
+  return json({
+    analytics: {
+      todayViews: today.views,
+      todayVisitors: today.visitors,
+      sevenDayViews: daily.slice(-7).reduce((sum, row) => sum + row.views, 0),
+      thirtyDayViews: daily.reduce((sum, row) => sum + row.views, 0),
+      change: previous.views ? Math.round(((today.views - previous.views) / previous.views) * 100) : null,
+      daily: daily.slice(-14),
+      topPages: topPages.results,
+    },
+    security: {
+      attempts24h: Number(securitySummary?.attempts_24h || 0),
+      unread: Number(securitySummary?.unread || 0),
+      urgent: Number(securitySummary?.urgent || 0),
+      items: securityItems.results,
+    },
+    generatedAt: timestamp,
+  });
+}
+
+async function acknowledgeSecurity(request: Request, env: Env, session: SessionRow): Promise<Response> {
+  if (request.method !== 'PUT') return methodNotAllowed('PUT');
+  const timestamp = now();
+  await env.DB.prepare('UPDATE security_events SET acknowledged_at = ? WHERE acknowledged_at IS NULL').bind(timestamp).run();
+  await audit(request, env, session.admin_id, 'security_notifications_reviewed', 'security', null);
+  return json({ ok: true });
+}
+
 async function publicContent(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'GET') return methodNotAllowed('GET');
   const url = new URL(request.url);
@@ -445,9 +573,14 @@ async function handleAdminApi(request: Request, env: Env, ctx: ExecutionContext)
   if (path === '/api/admin/session') return sessionInfo(request, env, ctx);
   const requiresCsrf = !['GET', 'HEAD'].includes(request.method);
   const session = await authenticate(request, env, requiresCsrf);
-  if (!session) return json({ error: 'Unauthorized.' }, 401);
+  if (!session) {
+    if (requiresCsrf) await securityEvent(request, env, 'blocked_admin_mutation', 'high');
+    return json({ error: 'Unauthorized.' }, 401);
+  }
   if (path === '/api/admin/logout') return logout(request, env);
   if (path === '/api/admin/audit') return request.method === 'GET' ? auditLog(env) : methodNotAllowed('GET');
+  if (path === '/api/admin/overview') return request.method === 'GET' ? overviewData(env) : methodNotAllowed('GET');
+  if (path === '/api/admin/security/acknowledge') return acknowledgeSecurity(request, env, session);
   if (path === '/api/admin/password') return changePassword(request, env, session);
   if (path === '/api/admin/content') {
     if (request.method === 'GET') return listContent(env);
@@ -486,6 +619,7 @@ export default {
     ctx.waitUntil(cleanup(env));
     try {
       if (url.pathname === '/__ry/gateway') return issueGateway(request, env);
+      if (url.pathname === '/api/analytics/pageview') return trackPageview(request, env);
       if (url.pathname === '/api/content') return publicContent(request, env);
       if (url.pathname.startsWith('/api/admin/')) return handleAdminApi(request, env, ctx);
       if (url.pathname === '/admin' || url.pathname.startsWith('/admin/')) return handleAdminPage(request, env);
