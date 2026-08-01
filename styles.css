@@ -2972,6 +2972,182 @@ body.social-page {
   gap: 18px;
 }
 
+.social-page .social-stream {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+}
+
+.social-page .social-feed-post {
+  min-width: 0;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+
+.social-page .social-feed-post:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 14px 36px rgba(15, 18, 38, 0.07);
+}
+
+.social-page .social-feed-author {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.social-page .social-feed-avatar {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  box-shadow: 0 0 0 4px rgba(15, 18, 38, .06);
+}
+
+.social-page .social-feed-identity {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.social-page .social-feed-identity strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: .92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.social-page .social-feed-identity small {
+  overflow: hidden;
+  margin-top: 2px;
+  color: var(--ink-mute);
+  font-size: .72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.social-page .social-feed-type {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-mute);
+  background: rgba(255, 255, 255, .72);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.social-page .social-feed-content {
+  margin: 17px 0 0 56px;
+}
+
+.social-page .social-feed-content h3 {
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: clamp(1.12rem, 2.2vw, 1.38rem);
+  letter-spacing: -.025em;
+}
+
+.social-page .social-feed-content > p {
+  margin: 0 0 15px;
+  color: var(--ink-soft);
+  font-size: .94rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.social-page .social-feed-music {
+  min-width: 0;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 96% 10%, rgba(91, 96, 138, .08), transparent 9rem),
+    rgba(248, 248, 251, .88);
+}
+
+.social-page .social-feed-music-icon {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(145deg, #292d4a, #0b0e1c);
+  box-shadow: 0 8px 18px rgba(15, 18, 38, .16);
+}
+
+.social-page .social-feed-music-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.social-page .social-feed-music-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.social-page .social-feed-music-copy small {
+  overflow: hidden;
+  margin-bottom: 3px;
+  color: var(--ink-mute);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.social-page .social-feed-music-copy strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.social-page .social-feed-music-copy > span {
+  overflow: hidden;
+  margin-top: 2px;
+  color: var(--ink-mute);
+  font-size: .76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.social-page .social-feed-tags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.social-page .social-feed-tags span {
+  color: var(--ink-mute);
+  font-size: .72rem;
+  font-weight: 600;
+}
+
 .social-page .social-note {
   min-width: 0;
   min-height: 350px;
@@ -3313,6 +3489,14 @@ body.social-page {
     grid-template-columns: 26px minmax(0, 1fr) 30px;
     gap: 9px;
   }
+
+  .social-page .social-feed-post { padding: 18px; }
+  .social-page .social-feed-author { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; }
+  .social-page .social-feed-avatar { width: 40px; height: 40px; }
+  .social-page .social-feed-type { padding: 5px 8px; }
+  .social-page .social-feed-content { margin: 15px 0 0; }
+  .social-page .social-feed-music { grid-template-columns: 44px minmax(0, 1fr); padding: 12px; gap: 11px; }
+  .social-page .social-feed-music-icon { width: 44px; height: 44px; border-radius: 12px; }
 }
 
 /* Social music playback */

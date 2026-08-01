@@ -514,15 +514,32 @@ async function renderDynamicSocialFeed() {
     if (!items.length) return;
     feed.innerHTML = items.map(item => {
       const when = item.published_at ? new Date(item.published_at * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
-      const href = item.metadata?.url || `content.html?type=${encodeURIComponent(item.type)}&slug=${encodeURIComponent(item.slug)}`;
-      return `<article class="social-note glass">
-        <div class="social-note-meta"><span>${escapeHtmlUi(item.type)}</span><time>${escapeHtmlUi(when)}</time></div>
-        <div><h3>${escapeHtmlUi(item.title)}</h3><p>${escapeHtmlUi(item.excerpt)}</p></div>
-        <a class="social-note-link" href="${escapeHtmlUi(href)}"><span>Open</span>${ICON_ARROW}</a>
+      const isMusic = item.type === 'music';
+      const postText = item.body || (!isMusic ? item.excerpt : '') || '';
+      const artist = item.metadata?.artist || item.excerpt || 'Ritik’s pick';
+      const genre = item.metadata?.genre || 'On repeat';
+      const tags = Array.isArray(item.metadata?.tags) ? item.metadata.tags.slice(0, 4) : [];
+      const musicAttachment = isMusic ? `<div class="social-feed-music" aria-label="Music: ${escapeHtmlUi(item.title)} by ${escapeHtmlUi(artist)}">
+        <span class="social-feed-music-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
+        <span class="social-feed-music-copy"><small>On repeat · ${escapeHtmlUi(genre)}</small><strong>${escapeHtmlUi(item.title)}</strong><span>${escapeHtmlUi(artist)}</span></span>
+      </div>` : '';
+      const tagList = tags.length ? `<div class="social-feed-tags">${tags.map(tag => `<span>#${escapeHtmlUi(tag)}</span>`).join('')}</div>` : '';
+      return `<article class="social-feed-post glass">
+        <header class="social-feed-author">
+          <span class="social-feed-avatar" aria-hidden="true">RY</span>
+          <span class="social-feed-identity"><strong>Ritik Yadav</strong><small>ritikyadav.us · <time>${escapeHtmlUi(when)}</time></small></span>
+          <span class="social-feed-type">${escapeHtmlUi(item.type)}</span>
+        </header>
+        <div class="social-feed-content">
+          ${isMusic ? '' : `<h3>${escapeHtmlUi(item.title)}</h3>`}
+          ${postText ? `<p>${escapeHtmlUi(postText)}</p>` : ''}
+          ${musicAttachment}
+          ${tagList}
+        </div>
       </article>`;
     }).join('');
     block.hidden = false;
-    observeRevealed(feed.querySelectorAll('.social-note'));
+    observeRevealed(feed.querySelectorAll('.social-feed-post'));
   } catch {
     // Static social content remains the fallback.
   }
