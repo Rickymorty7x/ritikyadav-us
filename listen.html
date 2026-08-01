@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Listen — Ritik's Music Library</title>
+  <meta name="description" content="Ritik's personal music library — the songs that live rent-free in his head. A curated collection of Bollywood, indie, and soulful tracks." />
+  <meta name="author" content="Ritik" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Listen — Ritik's Music Library" />
+  <meta property="og:description" content="The songs that live rent-free in my head. A curated collection of music I love." />
+  <meta property="og:site_name" content="Ritik" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Listen — Ritik's Music Library" />
+  <meta name="twitter:description" content="A curated collection of songs I love — Bollywood, indie, and everything soulful." />
+
+  <link rel="canonical" href="listen.html" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="listen.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav-wrap">
+    <nav class="nav glass">
+      <a href="index.html" class="logo">
+        <span class="logo-dot"></span>
+        Ritik<span class="logo-sub">Y.</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#love">Love</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <a href="index.html#contact" class="btn btn-primary nav-cta">Let's talk</a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="listen-hero">
+      <div class="floating-notes" aria-hidden="true">
+        <span class="note">♪</span>
+        <span class="note">♫</span>
+        <span class="note">♩</span>
+        <span class="note">♬</span>
+        <span class="note">♪</span>
+        <span class="note">♫</span>
+        <span class="note">♩</span>
+        <span class="note">♬</span>
+      </div>
+      <h1 class="listen-hero-title">
+        <span class="accent">Listen</span>.
+      </h1>
+      <p class="listen-hero-sub">
+        The songs that live rent-free in my head.
+      </p>
+      <p class="listen-hero-count" id="heroCount">
+        <strong>158</strong> songs in the library
+      </p>
+    </section>
+
+    <!-- Genre Filter Pills -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <div class="search-wrap glass">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search songs..." autocomplete="off" />
+      </div>
+    </div>
+
+    <!-- Player Section -->
+    <section class="player-section">
+      <div class="player-layout">
+
+        <!-- Now Playing Panel -->
+        <div class="np-panel glass">
+          <div class="np-art-wrap">
+            <div class="np-art" id="npArt">
+              <span id="npMonogram">HR</span>
+              <div class="np-equalizer" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="np-art-glow" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="np-info">
+            <div class="np-label">
+              <span class="pulse-dot"></span>
+              Now playing
+            </div>
+            <h3 class="np-title" id="npTitle">Haaye Re</h3>
+            <div class="np-artist" id="npArtist">Track 1 of 158</div>
+
+            <div class="progress" id="progress" role="slider" aria-label="Seek" tabindex="0">
+              <div class="progress-fill" id="progressFill"></div>
+              <div class="progress-thumb" id="progressThumb"></div>
+            </div>
+            <div class="np-time">
+              <span id="curTime">0:00</span>
+              <span id="totTime">0:00</span>
+            </div>
+
+            <div class="np-controls">
+              <button class="ctrl" id="prevBtn" aria-label="Previous track">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM20 6 9 12l11 6V6z"/></svg>
+              </button>
+              <button class="ctrl ctrl-main" id="playBtn" aria-label="Play / Pause">
+                <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+              </button>
+              <button class="ctrl" id="nextBtn" aria-label="Next track">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM4 6v12l11-6L4 6z"/></svg>
+              </button>
+            </div>
+
+            <!-- Shuffle & Repeat -->
+            <div class="np-extra-controls">
+              <button class="ctrl-sm" id="shuffleBtn" aria-label="Shuffle" title="Shuffle off">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 3 21 3 21 8"/>
+                  <line x1="4" y1="20" x2="21" y2="3"/>
+                  <polyline points="21 16 21 21 16 21"/>
+                  <line x1="15" y1="15" x2="21" y2="21"/>
+                  <line x1="4" y1="4" x2="9" y2="9"/>
+                </svg>
+              </button>
+              <button class="ctrl-sm" id="repeatBtn" aria-label="Repeat" title="Repeat off">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="17 1 21 5 17 9"/>
+                  <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                  <polyline points="7 23 3 19 7 15"/>
+                  <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Track List Panel -->
+        <div class="tracklist-panel glass">
+          <div class="tracklist-header">
+            <h2 class="tracklist-title">
+              <svg class="heart-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              Library
+            </h2>
+            <span class="tracklist-count" id="trackCount">158 tracks</span>
+          </div>
+          <ol class="tracklist" id="tracklist">
+            <!-- Rendered by JS -->
+          </ol>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Hidden YouTube player -->
+    <div class="yt-host" aria-hidden="true">
+      <div id="ytplayer"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-copy">
+        © <span id="year"></span> Ritik
+      </span>
+      <span class="footer-right">
+        Made with <span class="footer-heart">♥</span> and good music
+      </span>
+    </div>
+  </footer>
+
+  <script src="listen.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocuMind — Chat with your PDFs · Ritik</title>
+
+  <meta name="description" content="DocuMind is a retrieval-augmented Q&A app that lets you chat with your PDFs and papers. Built with LangChain, FAISS, and Streamlit." />
+  <meta name="author" content="Ritik" />
+  <meta name="keywords" content="DocuMind, RAG, retrieval augmented generation, LangChain, FAISS, OpenAI, Streamlit, PDF chat" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="DocuMind — chat with your PDFs" />
+  <meta property="og:description" content="A retrieval-augmented Q&A app for PDFs, papers, and notes — local, fast, with citations." />
+  <meta property="og:site_name" content="Ritik" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DocuMind — chat with your PDFs" />
+  <meta name="twitter:description" content="A retrieval-augmented Q&A app for PDFs, papers, and notes — local, fast, with citations." />
+
+  <link rel="canonical" href="projects/documind.html" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "DocuMind",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "author": { "@type": "Person", "name": "Ritik" },
+    "description": "A retrieval-augmented Q&A app that lets you chat with your PDFs and papers.",
+    "keywords": ["RAG", "LangChain", "FAISS", "Streamlit"]
+  }
+  </script>
+</head>
+<body>
+  <header class="nav-wrap">
+    <nav class="nav glass">
+      <a href="../index.html" class="logo">
+        <span class="logo-dot"></span>
+        Ritik<span class="logo-sub">.ai</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#projects" class="is-current">Projects</a></li>
+        <li><a href="../index.html#love">Love</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <a href="../index.html#contact" class="btn btn-primary nav-cta">Let's talk</a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <article class="project-page">
+      <div class="project-page-container">
+        <a href="../index.html#projects" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Back to projects
+        </a>
+
+        <header class="project-page-hero">
+          <span class="eyebrow">LLM · RAG</span>
+          <h1>DocuMind</h1>
+          <p class="project-summary">
+            A retrieval-augmented Q&amp;A app that lets you chat with your PDFs, papers, and notes —
+            local-first, with inline citations.
+          </p>
+
+          <div class="project-links-bar">
+            <a class="project-link-btn" href="https://github.com/ritikyadav/documind" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.09.66-.22.66-.48v-1.7c-2.78.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.58.67.48A10 10 0 0 0 12 2Z"/>
+              </svg>
+              View on GitHub
+            </a>
+            <a class="project-link-btn project-link-btn-primary" href="https://documind.example.com" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 4h6v6"/><path d="M10 14 21 3"/><path d="M19 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6"/>
+              </svg>
+              Live site
+            </a>
+          </div>
+        </header>
+
+        <section class="project-section">
+          <h2>Tech stack</h2>
+          <div class="tech-grid">
+            <span class="tech-badge">Python</span>
+            <span class="tech-badge">LangChain</span>
+            <span class="tech-badge">FAISS</span>
+            <span class="tech-badge">Sentence-Transformers</span>
+            <span class="tech-badge">OpenAI API</span>
+            <span class="tech-badge">Streamlit</span>
+          </div>
+        </section>
+
+        <section class="project-section">
+          <h2>What it does</h2>
+          <p>
+            Drop in any folder of PDFs and DocuMind turns them into a chat interface —
+            ask natural questions, get answers grounded in the source material with
+            page-level citations you can click through.
+          </p>
+        </section>
+
+        <section class="project-section">
+          <h2>Highlights</h2>
+          <ul class="feature-list">
+            <li><strong>Local by default.</strong> Embeddings and the FAISS index live on disk; no documents leave your machine unless you opt in.</li>
+            <li><strong>Source-cited answers.</strong> Every claim links back to the exact chunk it came from, so you can verify in one click.</li>
+            <li><strong>Pluggable models.</strong> Swap between OpenAI, a local Ollama model, or a small fine-tuned encoder without touching the UI.</li>
+            <li><strong>Hybrid retrieval.</strong> Dense + BM25 with a small cross-encoder reranker for the top 20 hits.</li>
+          </ul>
+        </section>
+
+        <section class="project-section">
+          <h2>How it works</h2>
+          <p>
+            PDFs are split into section-aware chunks, embedded with
+            <code>all-MiniLM-L6-v2</code>, and indexed in FAISS. At query time
+            DocuMind retrieves the top-k passages, reranks them with a small
+            cross-encoder, then feeds the survivors into the LLM with a tight
+            citation-anchored prompt.
+          </p>
+        </section>
+
+        <footer class="post-footer">
+          <a href="../index.html#projects" class="back-link">← All projects</a>
+          <span class="share">
+            <button type="button" data-share-copy>Copy link</button>
+          </span>
+        </footer>
+      </div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-copy">
+          © <span id="year"></span> Ritik
+          <span class="info-wrap">
+            <button class="info-btn" type="button" aria-label="About this design" aria-describedby="design-credit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 11v5"/>
+                <path d="M12 8h.01"/>
+              </svg>
+            </button>
+            <span class="info-tooltip" id="design-credit" role="tooltip">
+              I didn't design this frontend — it was crafted by <strong>Claude Opus 4.7</strong> based on my description and choices.
+            </span>
+          </span>
+        </span>
+      </div>
+      <span class="footer-right">
+        <span class="info-wrap">
+          <button class="info-btn" type="button" aria-label="A small fact about me" aria-describedby="sleep-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3 19 7 19 17 12 21 5 17 5 7 Z"/>
+              <circle cx="12" cy="12" r="3.6"/>
+            </svg>
+          </button>
+          <span class="info-tooltip info-tooltip-right" id="sleep-note" role="tooltip">
+            Caffeine doesn't work on me. To fall asleep, I read my <strong>organic chemistry</strong> notes.
+          </span>
+        </span>
+      </span>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

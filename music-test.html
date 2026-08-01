@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🇳🇵 Nepal anthem — audio source test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --crimson: #DC143C;
+      --blue: #003893;
+      --ink: #0f1226;
+      --ink-soft: #4a4f6b;
+      --line: rgba(15, 18, 38, 0.10);
+      --bg: #fff8f8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      margin: 0;
+      padding: 40px 20px 60px;
+      line-height: 1.55;
+    }
+    .container { max-width: 880px; margin: 0 auto; }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 8px;
+    }
+    .lead {
+      color: var(--ink-soft);
+      max-width: 640px;
+      margin: 0 0 28px;
+    }
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      margin: 32px 0 14px;
+      color: var(--ink);
+    }
+    code {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.84rem;
+      background: rgba(15, 18, 38, 0.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .topbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .topbar a, .topbar button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-size: 0.85rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .topbar a:hover, .topbar button:hover {
+      border-color: var(--ink);
+    }
+
+    .candidate {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px 16px;
+      align-items: center;
+    }
+    .candidate .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(220, 20, 60, 0.10);
+      color: var(--crimson);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 0.78rem;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .candidate .head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .candidate .label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .candidate .status {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: rgba(15, 18, 38, 0.06);
+      color: var(--ink-soft);
+      letter-spacing: 0.02em;
+    }
+    .candidate .status[data-state="ok"]      { background: #def7ec; color: #03543f; }
+    .candidate .status[data-state="loading"] { background: #fef3c7; color: #92400e; }
+    .candidate .status[data-state="error"]   { background: #fee2e2; color: #991b1b; }
+    .candidate .url {
+      grid-column: 2;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      word-break: break-all;
+      margin-top: -2px;
+    }
+    .candidate audio {
+      grid-column: 2;
+      width: 100%;
+      max-width: 540px;
+    }
+
+    .yt-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+    .yt-card iframe {
+      width: 100%;
+      max-width: 560px;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      border: 0;
+      margin-top: 10px;
+    }
+
+    .upload-card {
+      background: #fff;
+      border: 1.5px dashed rgba(220, 20, 60, 0.35);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+    .upload-card input[type=file] {
+      margin-top: 8px;
+      font-family: inherit;
+    }
+
+    .winner {
+      background: linear-gradient(135deg, rgba(220, 20, 60, 0.06), rgba(0, 56, 147, 0.06));
+      border: 1px solid rgba(0, 56, 147, 0.2);
+      padding: 18px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      margin-top: 28px;
+    }
+    .winner b { color: var(--crimson); }
+
+    .small {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 10px 0;
+      color: var(--ink);
+    }
+    details {
+      border-top: 1px solid var(--line);
+      margin-top: 20px;
+    }
+    details ul {
+      padding-left: 22px;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🇳🇵 Nepal anthem — audio source test</h1>
+    <p class="lead">
+      The site tries to play <em>Sayaun Thunga Phool Ka</em> when you toggle the Nepali theme,
+      but the source URL might be blocked, the wrong filename, or unsupported by your browser.
+      Try each candidate below — whichever <strong>plays sound</strong> is the one we use in <code>index.html</code>.
+    </p>
+
+    <div class="topbar">
+      <a href="index.html">← Back to site</a>
+      <button id="testAll" type="button">▶ Test all sources</button>
+      <button id="stopAll" type="button">⏹ Stop all</button>
+    </div>
+
+    <h2>Direct audio URLs (HTML5 <code>&lt;audio&gt;</code>)</h2>
+
+    <!-- Each candidate is rendered with vanilla audio controls. Press play on each;
+         whichever produces sound is the working one. -->
+
+    <div class="candidate" data-test>
+      <span class="num">1</span>
+      <div class="head">
+        <span class="label">Wikimedia Commons — full filename (.ogg)</span>
+        <span class="status" data-state="pending">Pending</span>
+      </div>
+      <div class="url">https://upload.wikimedia.org/wikipedia/commons/8/8c/National_anthem_of_Nepal_-_Sayaun_Thunga_Phool_Ka.ogg</div>
+      <audio controls preload="metadata"
+        src="https://upload.wikimedia.org/wikipedia/commons/8/8c/National_anthem_of_Nepal_-_Sayaun_Thunga_Phool_Ka.ogg"></audio>
+    </div>
+
+    <div class="candidate" data-test>
+      <span class="num">2</span>
+      <div class="head">
+        <span class="label">Wikimedia Commons — short filename (.ogg)</span>
+        <span class="status" data-state="pending">Pending</span>
+      </div>
+      <div class="url">https://upload.wikimedia.org/wikipedia/commons/9/9a/National_Anthem_of_Nepal.ogg</div>
+      <audio controls preload="metadata"
+        src="https://upload.wikimedia.org/wikipedia/commons/9/9a/National_Anthem_of_Nepal.ogg"></audio>
+    </div>
+
+    <div class="candidate" data-test>
+      <span class="num">3</span>
+      <div class="head">
+        <span class="label">Wikimedia Commons — Sayaun Thunga Phool Ka (.ogg)</span>
+        <span class="status" data-state="pending">Pending</span>
+      </div>
+      <div class="url">https://upload.wikimedia.org/wikipedia/commons/0/0e/Sayaun_Thunga_Phool_Ka.ogg</div>
+      <audio controls preload="metadata"
+        src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Sayaun_Thunga_Phool_Ka.ogg"></audio>
+    </div>
+
+    <div class="candidate" data-test>
+      <span class="num">4</span>
+      <div class="head">
+        <span class="label">Wikimedia transcoded MP3 (auto-generated)</span>
+        <span class="status" data-state="pending">Pending</span>
+      </div>
+      <div class="url">https://upload.wikimedia.org/wikipedia/commons/transcoded/9/9a/National_Anthem_of_Nepal.ogg/National_Anthem_of_Nepal.ogg.mp3</div>
+      <audio controls preload="metadata"
+        src="https://upload.wikimedia.org/wikipedia/commons/transcoded/9/9a/National_Anthem_of_Nepal.ogg/National_Anthem_of_Nepal.ogg.mp3"></audio>
+    </div>
+
+    <div class="candidate" data-test>
+      <span class="num">5</span>
+      <div class="head">
+        <span class="label">Local file at <code>audio/nepal-anthem.mp3</code> (drop your own)</span>
+        <span class="status" data-state="pending">Pending</span>
+      </div>
+      <div class="url">audio/nepal-anthem.mp3 (relative to this page)</div>
+      <audio controls preload="metadata" src="audio/nepal-anthem.mp3"></audio>
+    </div>
+
+    <h2>YouTube embed test (same IDs the main site uses)</h2>
+    <p class="small">
+      The main site now plays the anthem via the YouTube IFrame API with these 5 video IDs and
+      auto-falls-through if one is region-locked or has embedding disabled.
+      <strong>Click play on each iframe below</strong> — whichever plays sound is the one that'll
+      play on the site too. If a "Video unavailable" overlay appears, that ID is blocked for you.
+    </p>
+
+    <div class="yt-card">
+      <strong>YT-1</strong> · ID <code>4xvSpNNRRBI</code>
+      <iframe loading="lazy"
+        src="https://www.youtube.com/embed/4xvSpNNRRBI?rel=0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+
+    <div class="yt-card">
+      <strong>YT-2</strong> · ID <code>3ifS3VFG7AE</code>
+      <iframe loading="lazy"
+        src="https://www.youtube.com/embed/3ifS3VFG7AE?rel=0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+
+    <div class="yt-card">
+      <strong>YT-3</strong> · ID <code>bYbdh4yqZxM</code>
+      <iframe loading="lazy"
+        src="https://www.youtube.com/embed/bYbdh4yqZxM?rel=0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+
+    <div class="yt-card">
+      <strong>YT-4</strong> · ID <code>xfMA5znGUNw</code>
+      <iframe loading="lazy"
+        src="https://www.youtube.com/embed/xfMA5znGUNw?rel=0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+
+    <div class="yt-card">
+      <strong>YT-5</strong> · ID <code>OMzmlIyN0so</code>
+      <iframe loading="lazy"
+        src="https://www.youtube.com/embed/OMzmlIyN0so?rel=0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+
+    <h2>Test your browser's audio</h2>
+    <div class="upload-card">
+      <strong>Drop any local audio file</strong>
+      <p class="small" style="margin: 4px 0 6px;">
+        This rules out browser/audio-driver issues. Pick any MP3/OGG/M4A on your
+        computer — if it plays here, browser audio works fine; the issue is the
+        URLs above.
+      </p>
+      <input id="localFile" type="file" accept="audio/*" />
+      <audio id="localPlayer" controls style="display:block; margin-top:10px; width:100%; max-width:540px;"></audio>
+    </div>
+
+    <div class="winner" id="winner" hidden>
+      <b>Working source detected.</b>
+      Once you've confirmed which numbered candidate plays sound, tell me the number
+      and I'll wire it into <code>index.html</code> as the primary anthem source.
+    </div>
+
+    <details>
+      <summary>What each result tells us</summary>
+      <ul>
+        <li><strong>Plays sound</strong> — the URL works in your browser/network. Use that one.</li>
+        <li><strong>Loads but silent</strong> — file may be missing audio, or volume is muted at OS level.</li>
+        <li><strong>404 / Error</strong> — that exact filename doesn't exist on Wikimedia. Try the next.</li>
+        <li><strong>CORS error in console</strong> — server blocks cross-origin audio. Try a different host or self-host.</li>
+        <li><strong>"Video unavailable" on YouTube</strong> — embedding is restricted in your region or by uploader.</li>
+        <li><strong>Nothing works</strong> — drop your own MP3 at <code>audio/nepal-anthem.mp3</code> in the project folder.</li>
+      </ul>
+    </details>
+  </div>
+
+  <script>
+    /* Auto-update status as each <audio> loads / errors / plays */
+    const tests = document.querySelectorAll('[data-test]');
+    tests.forEach((card, idx) => {
+      const audio  = card.querySelector('audio');
+      const status = card.querySelector('.status');
+      if (!audio || !status) return;
+
+      const set = (state, text) => {
+        status.dataset.state = state;
+        status.textContent = text;
+      };
+
+      audio.addEventListener('loadstart',  () => set('loading', 'Loading…'));
+      audio.addEventListener('loadedmetadata', () => {
+        if (audio.duration && isFinite(audio.duration)) {
+          set('ok', `✓ Loaded · ${Math.round(audio.duration)}s`);
+        } else {
+          set('ok', '✓ Loaded');
+        }
+      });
+      audio.addEventListener('canplay',    () => {
+        if (status.dataset.state !== 'ok') set('ok', '✓ Ready');
+      });
+      audio.addEventListener('playing',    () => set('ok', '▶ Playing'));
+      audio.addEventListener('pause',      () => {
+        if (status.dataset.state === 'ok' && /Playing/.test(status.textContent)) {
+          set('ok', '✓ Loaded');
+        }
+      });
+      audio.addEventListener('error',      () => {
+        const code = audio.error?.code;
+        const msg = {
+          1: 'Aborted',
+          2: 'Network error',
+          3: 'Decode error',
+          4: 'Format / 404'
+        }[code] || 'Failed';
+        set('error', '✗ ' + msg);
+      });
+    });
+
+    /* Test-all button: tries to play every audio in sequence, 1.5s each */
+    document.getElementById('testAll').addEventListener('click', async () => {
+      for (const card of tests) {
+        const audio = card.querySelector('audio');
+        try {
+          audio.currentTime = 0;
+          await audio.play();
+          await new Promise(r => setTimeout(r, 1500));
+          audio.pause();
+        } catch (_) { /* ignore — already shown as error */ }
+      }
+    });
+
+    document.getElementById('stopAll').addEventListener('click', () => {
+      tests.forEach(card => {
+        const a = card.querySelector('audio');
+        if (a) { a.pause(); a.currentTime = 0; }
+      });
+    });
+
+    /* Local file uploader — proves browser can play audio at all */
+    const localFile   = document.getElementById('localFile');
+    const localPlayer = document.getElementById('localPlayer');
+    if (localFile) {
+      localFile.addEventListener('change', () => {
+        const f = localFile.files?.[0];
+        if (!f) return;
+        localPlayer.src = URL.createObjectURL(f);
+        localPlayer.play().catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

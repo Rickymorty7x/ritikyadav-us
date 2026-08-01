@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My story — Ritik</title>
+
+  <meta name="description" content="The longer story of Ritik — a curious kid, a math-and-machines pivot, and falling in love with AI/ML." />
+  <meta name="author" content="Ritik" />
+
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="My story — Ritik" />
+  <meta property="og:description" content="From a curious kid to an AI/ML enthusiast — the longer version of how I got here." />
+  <meta property="og:site_name" content="Ritik" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="My story — Ritik" />
+  <meta name="twitter:description" content="From a curious kid to an AI/ML enthusiast — the longer version of how I got here." />
+
+  <link rel="canonical" href="story.html" />
+
+  <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ritik",
+    "description": "AI/ML enthusiast building intelligent, useful things.",
+    "jobTitle": "AI/ML Engineer",
+    "knowsAbout": ["Machine Learning", "Deep Learning", "Large Language Models", "Computer Vision", "MLOps"]
+  }
+  </script>
+</head>
+<body>
+  <header class="nav-wrap">
+    <nav class="nav glass">
+      <a href="index.html" class="logo">
+        <span class="logo-dot"></span>
+        Ritik<span class="logo-sub">.ai</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#about" class="is-current">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#love">Love</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <a href="index.html#contact" class="btn btn-primary nav-cta">Let's talk</a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <article class="post-page">
+      <div class="post-container">
+        <a href="index.html#about" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Back to home
+        </a>
+
+        <header class="post-header">
+          <span class="eyebrow">Story</span>
+          <h1>The longer version of how I got here.</h1>
+          <p class="story-lead">
+            One scroll through the moments that shaped me — from a curious
+            small-town kid to building things with neural networks.
+            Tap any year to expand the story.
+          </p>
+          <div class="story-actions">
+            <button class="btn btn-secondary gallery-cta" id="openGalleryBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+              </svg>
+              Browse <span id="galleryPhotoCount">all</span> photos
+            </button>
+          </div>
+          <p class="story-photo-credit">
+            Timeline images are thematic stock photos from
+            <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>
+            for illustration (not personal archives).
+          </p>
+        </header>
+
+        <section class="timeline" aria-label="Life timeline">
+          <ol class="timeline-list" id="timelineList">
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2005</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>Born curious</h3>
+                    <p>A small-town beginning, an unusually loud appetite for asking why.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>The earliest memories are blurry — but family stories agree that I was the kid who'd sit alone with a cardboard box and ask, with absolute seriousness, <em>"how does this fold?"</em> for an hour.</p>
+                    <p>Curiosity isn't something I learned. It's just where I started.</p>
+                    <div class="timeline-photos">
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: young child playing outdoors — illustration · 2005" loading="lazy" decoding="async" />
+                    </figure>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2010</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>Taking everything apart</h3>
+                    <p>Wall clocks, broken radios, the family DVD player. Few survived intact.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>Anything with screws was fair game. My parents tolerated the trail of disassembled electronics across the floor mostly because — most of the time — I'd put them back together. <em>Mostly.</em></p>
+                    <p>This was the beginning of a feeling I still chase: the small, quiet thrill of <strong>understanding how something works</strong>.</p>
+                    <div class="timeline-photos">
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: circuit board and chips — illustration · 2010" loading="lazy" decoding="async" />
+                    </figure>
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1581092160562-40aa08c96634?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: engineer with electronics — illustration · 2010" loading="lazy" decoding="async" />
+                    </figure>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2014</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>Math becomes a language</h3>
+                    <p>A teacher who treated equations like puzzles. Everything changed.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>School was unremarkable until I met a math teacher who treated equations like puzzles instead of formulas. Suddenly math wasn't a chore — it was a quiet, beautiful language for describing things I couldn't otherwise express.</p>
+                    <p>I started staying back after class to ask "but <em>why</em> does this work?". The patience of that one teacher rewired me.</p>
+                    <div class="timeline-photos">
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: handwritten equations on a board — illustration · 2014" loading="lazy" decoding="async" />
+                    </figure>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2017</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>First lines of Python</h3>
+                    <p>A free tutorial. A guessing game. A switch flipped.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>I followed a free Python tutorial late at night and wrote a tiny number-guessing game. It worked. Twenty minutes later I was staring at a blinking cursor wondering what to make next.</p>
+                    <p>This is the moment I think of as the <em>real</em> beginning. Code felt like a superpower I'd been quietly waiting for.</p>
+                    <div class="timeline-photos">
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: programming on a monitor — illustration · 2017" loading="lazy" decoding="async" />
+                    </figure>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2019</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>First neural network</h3>
+                    <p>A slow MNIST classifier. 40 minutes on a CPU. The loss curve descended.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>The first neural network I built was a slow, badly-implemented MNIST classifier. 40 minutes on a CPU. 88% accuracy. I remember staring at the terminal as the loss curve descended and thinking, <em>"this thing is actually <strong>learning</strong>"</em>.</p>
+                    <p>That moment is hard to describe to someone who hasn't felt it. It's part magic trick, part quiet proof that the universe is, in some small way, kind.</p>
+                    <div class="timeline-photos">
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: developer workspace with code — illustration · 2019" loading="lazy" decoding="async" />
+                    </figure>
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: analytics charts on screen — illustration · 2019" loading="lazy" decoding="async" />
+                    </figure>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2021</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>fast.ai &amp; the Karpathy era</h3>
+                    <p>Lectures, papers, and the rabbit hole of "from scratch".</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>fast.ai unlocked the speed-of-thinking. Andrej Karpathy's "Spelled-out intro to neural networks" series unlocked the <em>depth</em>. I watched the latter three times in a row, each pass discovering something I'd missed.</p>
+                    <p>I burned through papers I didn't fully understand and then, eventually, papers I did.</p>
+                    <div class="timeline-photos">
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: studying with books and laptop — illustration · 2021" loading="lazy" decoding="async" />
+                    </figure>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2023</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>Transformer from scratch</h3>
+                    <p>A weekend, a single GPU, Shakespeare-flavoured nonsense at 4 a.m.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>I'd read <em>Attention is All You Need</em> four times before actually sitting down to implement it. The gap between those two states turns out to be <strong>most of the learning</strong>.</p>
+                    <p>The full write-up lives over on the <a href="blog.html">blog</a>.</p>
+                    <div class="timeline-photos">
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: code editor on screen — illustration · 2023" loading="lazy" decoding="async" />
+                    </figure>
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: laptop on a desk — illustration · 2023" loading="lazy" decoding="async" />
+                    </figure>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2024</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>Building real things</h3>
+                    <p>RAG apps over a weekend. Open-source contributions. First "wait, people use this?" emails.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>I started shipping side projects publicly — RAG apps, tiny CLI tools, a couple of fine-tuning experiments. Some got used by exactly one person; some, more. Both kinds taught me something.</p>
+                    <p>Open source turned out to be the best feedback loop I've ever had.</p>
+                    <div class="timeline-photos">
+                      <figure class="timeline-photo">
+                      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&amp;fit=crop&amp;w=960&amp;q=80" width="960" height="720" alt="Stock photo: team collaborating — illustration · 2024" loading="lazy" decoding="async" />
+                    </figure>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry">
+              <div class="timeline-marker">
+                <span class="timeline-year">2025</span>
+                <span class="timeline-dot"></span>
+              </div>
+              <article class="glass timeline-card" data-open="false">
+                <button class="timeline-summary" type="button" aria-expanded="false">
+                  <span class="timeline-summary-text">
+                    <h3>Writing in public</h3>
+                    <p>Notes on training, opinions on small models, a slow-moving blog.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>I started writing about ML — not to teach, but to <em>think</em> properly. Putting half-formed ideas into sentences exposes the parts you don't actually understand.</p>
+                    <p>The collection is small but growing. <a href="blog.html">Read the blog →</a></p>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-entry timeline-now">
+              <div class="timeline-marker">
+                <span class="timeline-year">2026</span>
+                <span class="timeline-dot timeline-dot-now"></span>
+              </div>
+              <article class="glass timeline-card" data-open="true">
+                <button class="timeline-summary" type="button" aria-expanded="true">
+                  <span class="timeline-summary-text">
+                    <h3>Today</h3>
+                    <p>Small models, agents, MLOps plumbing — and whatever I'm currently nerd-sniped by.</p>
+                  </span>
+                  <span class="timeline-toggle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="timeline-content-wrap">
+                  <div class="timeline-content">
+                    <p>Currently obsessing over: <strong>small language models</strong>, agentic workflows, and the messy plumbing that turns a working notebook into something a person can actually use.</p>
+                    <p>I want to build systems that are useful in the unsexy, durable sense — tools that help people read faster, learn deeper, decide better.</p>
+                    <p>If any of that resonates, <a href="index.html#contact">say hi</a>. I'm always up for a conversation about ML, weird side projects, or which paper you've re-read four times without ever implementing.</p>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+          </ol>
+        </section>
+
+        <footer class="post-footer">
+          <a href="index.html" class="back-link">← Home</a>
+          <span class="share">
+            <a href="index.html#contact" class="btn btn-primary about-cta">
+              Get in touch
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </a>
+          </span>
+        </footer>
+      </div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-copy">
+          © <span id="year"></span> Ritik
+          <span class="info-wrap">
+            <button class="info-btn" type="button" aria-label="About this design" aria-describedby="design-credit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 11v5"/>
+                <path d="M12 8h.01"/>
+              </svg>
+            </button>
+            <span class="info-tooltip" id="design-credit" role="tooltip">
+              I didn't design this frontend — it was crafted by <strong>Claude Opus 4.7</strong> based on my description and choices.
+            </span>
+          </span>
+        </span>
+      </div>
+      <span class="footer-right">
+        <span class="info-wrap">
+          <a href="listen.html" class="info-btn" aria-label="Listen to my music library" title="Listen to my music library">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13"/>
+              <circle cx="6" cy="18" r="3"/>
+              <circle cx="18" cy="16" r="3"/>
+            </svg>
+          </a>
+        </span>
+        <span class="info-wrap">
+          <button class="info-btn" type="button" aria-label="A small fact about me" aria-describedby="sleep-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3 19 7 19 17 12 21 5 17 5 7 Z"/>
+              <circle cx="12" cy="12" r="3.6"/>
+            </svg>
+          </button>
+          <span class="info-tooltip info-tooltip-right" id="sleep-note" role="tooltip">
+            Caffeine doesn't work on me. To fall asleep, I read my <strong>organic chemistry</strong> notes.
+          </span>
+        </span>
+      </span>
+    </div>
+  </footer>
+
+  <!-- Photo gallery lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo gallery">
+    <button class="lightbox-close" type="button" aria-label="Close gallery">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <button class="lightbox-prev lightbox-nav" type="button" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+    <button class="lightbox-next lightbox-nav" type="button" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 6l6 6-6 6"/>
+      </svg>
+    </button>
+    <figure class="lightbox-stage">
+      <div class="lightbox-frame" id="lightboxFrame">
+        <!-- Image or placeholder is injected here at runtime -->
+      </div>
+      <figcaption class="lightbox-meta">
+        <span class="lightbox-caption" id="lightboxCaption"></span>
+        <span class="lightbox-counter" id="lightboxCounter"></span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
