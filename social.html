@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260801-2" />
+  <link rel="stylesheet" href="styles.css?v=20260801-4" />
 </head>
 <body class="social-page">
   <header class="nav-wrap">
@@ -19,13 +19,13 @@
       </a>
       <ul class="nav-links">
         <li><a href="index.html#about">About</a></li>
-        <li><a href="index.html#skills">Skills</a></li>
-        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
         <li><a href="social.html" class="is-current">Social</a></li>
         <li><a href="blog.html">Blog</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
-      <a href="index.html#contact" class="btn btn-primary nav-cta">Let's talk</a>
+      <a href="contact.html" class="btn btn-primary nav-cta">Let's talk</a>
       <button class="nav-toggle" aria-label="Toggle navigation">
         <span></span><span></span><span></span>
       </button>
@@ -59,23 +59,52 @@
           </div>
 
           <div class="social-music-panel glass">
-            <div class="social-music-cover" aria-hidden="true">
-              <div class="social-record">
+            <div class="yt-host" aria-hidden="true"><div id="ytplayer"></div></div>
+
+            <div class="social-music-cover">
+              <div class="social-record" id="npArt" aria-hidden="true">
                 <span class="social-record-ring"></span>
-                <span class="social-record-label">RY</span>
+                <span class="social-record-label" id="npMonogram">P</span>
               </div>
-              <div class="social-cover-copy">
-                <span>Current rotation</span>
-                <strong>Volume 01</strong>
+
+              <div class="social-player">
+                <div class="social-player-copy">
+                  <span>Now playing</span>
+                  <strong id="npTitle">Parinaam</strong>
+                  <small id="npArtist">Dorwin John · John</small>
+                </div>
+
+                <div class="social-player-progress progress" id="progress" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                  <span class="progress-fill" id="progressFill"></span>
+                  <span class="progress-thumb" id="progressThumb"></span>
+                </div>
+
+                <div class="social-player-footer">
+                  <div class="social-player-controls">
+                    <button class="social-player-button" id="prevBtn" type="button" aria-label="Previous track">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6V5Zm3.5 7L19 5v14l-9.5-7Z"/></svg>
+                    </button>
+                    <button class="social-player-button social-player-button-main" id="playBtn" type="button" aria-label="Play">
+                      <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>
+                      <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/></svg>
+                    </button>
+                    <button class="social-player-button" id="nextBtn" type="button" aria-label="Next track">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2V5ZM5 5l9.5 7L5 19V5Z"/></svg>
+                    </button>
+                  </div>
+                  <div class="social-player-time"><span id="curTime">0:00</span><span id="totTime">4:30</span></div>
+                </div>
+
+                <p class="social-player-note" id="playerNote" hidden></p>
               </div>
             </div>
 
-            <div class="social-tracklist" role="list" aria-label="Current favorite songs">
-              <div class="social-track" role="listitem"><span class="social-track-number">01</span><span class="social-track-copy"><strong>Parinaam</strong><small>Dorwin John</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
-              <div class="social-track" role="listitem"><span class="social-track-number">02</span><span class="social-track-copy"><strong>Deva Deva</strong><small>Arijit Singh, Jonita Gandhi</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
-              <div class="social-track" role="listitem"><span class="social-track-number">03</span><span class="social-track-copy"><strong>Channa Mereya</strong><small>Arijit Singh</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
-              <div class="social-track" role="listitem"><span class="social-track-number">04</span><span class="social-track-copy"><strong>Tere Vaaste</strong><small>Varun Jain, Sachin-Jigar</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
-              <div class="social-track" role="listitem"><span class="social-track-number">05</span><span class="social-track-copy"><strong>Tu Hai Kahan</strong><small>AUR feat. ZAYN</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
+            <div class="social-tracklist" id="tracklist" role="list" aria-label="Current favorite songs">
+              <button class="social-track" data-idx="0" type="button" role="listitem" aria-label="Play Parinaam by Dorwin John"><span class="social-track-number">01</span><span class="social-track-copy"><strong>Parinaam</strong><small>Dorwin John</small></span><span class="social-track-mark" aria-hidden="true">▶</span></button>
+              <button class="social-track" data-idx="1" type="button" role="listitem" aria-label="Play Deva Deva by Arijit Singh and Jonita Gandhi"><span class="social-track-number">02</span><span class="social-track-copy"><strong>Deva Deva</strong><small>Arijit Singh, Jonita Gandhi</small></span><span class="social-track-mark" aria-hidden="true">▶</span></button>
+              <button class="social-track" data-idx="2" type="button" role="listitem" aria-label="Play Channa Mereya by Arijit Singh"><span class="social-track-number">03</span><span class="social-track-copy"><strong>Channa Mereya</strong><small>Arijit Singh</small></span><span class="social-track-mark" aria-hidden="true">▶</span></button>
+              <button class="social-track" data-idx="3" type="button" role="listitem" aria-label="Play Tere Vaaste by Varun Jain and Sachin-Jigar"><span class="social-track-number">04</span><span class="social-track-copy"><strong>Tere Vaaste</strong><small>Varun Jain, Sachin-Jigar</small></span><span class="social-track-mark" aria-hidden="true">▶</span></button>
+              <button class="social-track" data-idx="4" type="button" role="listitem" aria-label="Play Tu Hai Kahan by AUR featuring ZAYN"><span class="social-track-number">05</span><span class="social-track-copy"><strong>Tu Hai Kahan</strong><small>AUR feat. ZAYN</small></span><span class="social-track-mark" aria-hidden="true">▶</span></button>
             </div>
           </div>
         </section>
@@ -162,6 +191,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20260801-2"></script>
+  <script src="script.js?v=20260801-4"></script>
 </body>
 </html>

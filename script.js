@@ -12,6 +12,23 @@ links?.querySelectorAll('a').forEach(a =>
   a.addEventListener('click', () => links.classList.remove('open'))
 );
 
+// Contact page: turn the chat-style composer into a ready-to-send email.
+const contactComposer = document.getElementById('contactComposer');
+contactComposer?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!contactComposer.reportValidity()) return;
+
+  const data = new FormData(contactComposer);
+  const name = String(data.get('name') || '').trim();
+  const email = String(data.get('email') || '').trim();
+  const message = String(data.get('message') || '').trim();
+  const subject = `Website message from ${name}`;
+  const body = `${message}\n\nFrom: ${name}\nReply to: ${email}`;
+  const status = document.getElementById('contactComposerStatus');
+  if (status) status.textContent = 'Opening your email app with the message ready…';
+  window.location.href = `mailto:hello@ritik.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
+
 // Reveal-on-scroll with late-bound cards (blog + projects may render after fetch)
 const revealSelector = '.section-head, .about-card, .focus-card, .skill, .contact-card, .stat, .social-music-panel, .social-note, .social-life-card, .music-card, .love-card, .love-section-label';
 const revealTargets = document.querySelectorAll(revealSelector);
@@ -54,7 +71,7 @@ const tracks = [
     duration: 279
   },
   {
-    title: 'Channa Mereya (Unplugged)',
+    title: 'Channa Mereya',
     artist: 'Arijit Singh',
     genre: 'Ae Dil Hai Mushkil',
     videoId: 'pfdhc26gpsM',
@@ -117,6 +134,23 @@ function fmt(t) {
 
 function renderTracklist() {
   if (!tracklistEl) return;
+
+  const socialRows = tracklistEl.querySelectorAll('.social-track');
+  if (socialRows.length) {
+    socialRows.forEach((el, i) => {
+      el.dataset.idx = String(i);
+      el.addEventListener('click', () => {
+        const idx = Number(el.dataset.idx);
+        if (idx === currentIdx && ytReady) {
+          togglePlay();
+        } else {
+          loadTrack(idx, true);
+        }
+      });
+    });
+    return;
+  }
+
   tracklistEl.innerHTML = tracks.map((t, i) => `
     <li class="track" data-idx="${i}">
       <span class="track-num">${String(i + 1).padStart(2, '0')}</span>
@@ -142,16 +176,23 @@ function renderTracklist() {
 }
 
 function setActiveRow() {
-  tracklistEl?.querySelectorAll('.track').forEach((el, i) => {
-    el.classList.toggle('active', i === currentIdx);
+  tracklistEl?.querySelectorAll('.track, .social-track').forEach((el, i) => {
+    const isActive = i === currentIdx;
+    el.classList.toggle('active', isActive);
+    el.setAttribute('aria-pressed', String(isActive));
   });
 }
 
 function setPlayingUI(isPlaying) {
-  playIcon.style.display = isPlaying ? 'none' : '';
-  pauseIcon.style.display = isPlaying ? '' : 'none';
-  npArt.classList.toggle('is-playing', isPlaying);
-  playBtn.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
+  if (playIcon) playIcon.style.display = isPlaying ? 'none' : '';
+  if (pauseIcon) pauseIcon.style.display = isPlaying ? '' : 'none';
+  npArt?.classList.toggle('is-playing', isPlaying);
+  playBtn?.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
+  document.querySelector('.social-music-panel')?.classList.toggle('is-playing', isPlaying);
+  tracklistEl?.querySelectorAll('.social-track').forEach((el, i) => {
+    const mark = el.querySelector('.social-track-mark');
+    if (mark) mark.textContent = i === currentIdx && isPlaying ? 'Ⅱ' : '▶';
+  });
   if (isPlaying) startVisualizer();
   else stopVisualizer();
 }
@@ -658,13 +699,14 @@ document.querySelectorAll('.timeline-card .timeline-summary').forEach(btn => {
 
 function updateNowPlayingMeta() {
   const t = tracks[currentIdx];
-  npTitle.textContent = t.title;
-  npArtist.textContent = `${t.artist} · ${t.genre}`;
-  npMonogram.textContent = monogramOf(t.title);
-  progressFill.style.width = '0%';
-  progressThumb.style.left = '0%';
-  curTime.textContent = '0:00';
-  totTime.textContent = fmt(t.duration);
+  if (npTitle) npTitle.textContent = t.title;
+  if (npArtist) npArtist.textContent = `${t.artist} · ${t.genre}`;
+  if (npMonogram) npMonogram.textContent = monogramOf(t.title);
+  if (progressFill) progressFill.style.width = '0%';
+  if (progressThumb) progressThumb.style.left = '0%';
+  if (progress) progress.setAttribute('aria-valuenow', '0');
+  if (curTime) curTime.textContent = '0:00';
+  if (totTime) totTime.textContent = fmt(t.duration);
   setActiveRow();
 }
 
@@ -700,6 +742,7 @@ function startProgressLoop() {
       const pct = Math.min(100, (cur / dur) * 100);
       progressFill.style.width = pct + '%';
       progressThumb.style.left = pct + '%';
+      progress.setAttribute('aria-valuenow', String(Math.round(pct)));
       curTime.textContent = fmt(cur);
       totTime.textContent = fmt(dur);
     }
@@ -802,6 +845,15 @@ if (tracklistEl) {
   renderTracklist();
   updateNowPlayingMeta();
 
+  if (window.YT?.Player) {
+    window.onYouTubeIframeAPIReady();
+  } else {
+    const youtubeApi = document.createElement('script');
+    youtubeApi.src = 'https://www.youtube.com/iframe_api';
+    youtubeApi.async = true;
+    document.head.appendChild(youtubeApi);
+  }
+
   // Fallback note if the YouTube IFrame API never loads (blocked / offline)
   setTimeout(() => {
     if (!ytReady && !pendingAutoplay) {
@@ -842,7 +894,7 @@ if (tracklistEl) {
     const tag = (e.target.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea') return;
     if (e.code !== 'Space') return;
-    const sec = document.getElementById('social');
+    const sec = tracklistEl.closest('.social-block') || document.getElementById('social');
     if (!sec) return;
     const r = sec.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.7 && r.bottom > window.innerHeight * 0.2) {
