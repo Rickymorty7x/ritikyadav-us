@@ -18,13 +18,6 @@ import {
   toBase64Url,
 } from './security';
 
-interface Env {
-  DB: D1Database;
-  AUTH_PEPPER: string;
-  TURNSTILE_SITE_KEY?: string;
-  TURNSTILE_SECRET?: string;
-}
-
 type AdminRow = {
   id: number;
   username: string;
@@ -63,6 +56,7 @@ const SESSION_SECONDS = 8 * 60 * 60;
 const SESSION_IDLE_SECONDS = 45 * 60;
 const GATE_ENTRY_SECONDS = 3 * 60;
 const GATE_BROWSER_SECONDS = 5 * 60;
+const TURNSTILE_ACTION = 'turnstile-spin-v2';
 
 function now(): number {
   return Math.floor(Date.now() / 1000);
@@ -207,10 +201,15 @@ async function validGate(request: Request, env: Env): Promise<{ id_hash: string 
 async function validateTurnstile(request: Request, env: Env, token: string): Promise<boolean> {
   if (!env.TURNSTILE_SECRET) return false;
   if (!token || token.length > 2048) return false;
+  const expectedHostnames = new Set(
+    env.TURNSTILE_HOSTNAMES.split(',').map((hostname) => hostname.trim()).filter(Boolean),
+  );
+  if (expectedHostnames.size === 0) return false;
   try {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      signal: AbortSignal.timeout(10_000),
       body: new URLSearchParams({
         secret: env.TURNSTILE_SECRET,
         response: token,
@@ -218,8 +217,11 @@ async function validateTurnstile(request: Request, env: Env, token: string): Pro
       }),
     });
     if (!response.ok) return false;
-    const result = await response.json<{ success?: boolean }>();
-    return result.success === true;
+    const result = await response.json<{ success?: boolean; action?: string; hostname?: string }>();
+    return result.success === true
+      && result.action === TURNSTILE_ACTION
+      && typeof result.hostname === 'string'
+      && expectedHostnames.has(result.hostname);
   } catch {
     return false;
   }

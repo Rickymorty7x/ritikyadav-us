@@ -19,7 +19,8 @@
     }
   ],
   "vars": {
-    "TURNSTILE_SITE_KEY": "0x4AAAAAAEDhBnRxTX0vF_db"
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAEDhBnRxTX0vF_db",
+    "TURNSTILE_HOSTNAMES": "ritikyadav.us"
   },
   "secrets": {
     "required": ["AUTH_PEPPER", "TURNSTILE_SECRET"]
