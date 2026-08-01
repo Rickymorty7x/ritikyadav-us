@@ -13,7 +13,7 @@ links?.querySelectorAll('a').forEach(a =>
 );
 
 // Reveal-on-scroll with late-bound cards (blog + projects may render after fetch)
-const revealSelector = '.section-head, .about-card, .focus-card, .skill, .contact-card, .stat, .social-post, .music-card, .love-card, .love-section-label';
+const revealSelector = '.section-head, .about-card, .focus-card, .skill, .contact-card, .stat, .social-music-panel, .social-note, .social-life-card, .music-card, .love-card, .love-section-label';
 const revealTargets = document.querySelectorAll(revealSelector);
 revealTargets.forEach(el => el.classList.add('reveal'));
 

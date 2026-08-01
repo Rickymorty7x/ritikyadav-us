@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="social-page">
   <header class="nav-wrap">
     <nav class="nav glass">
       <a href="index.html" class="logo">
@@ -47,53 +47,110 @@
       </div>
     </section>
 
-    <section class="section section-blog social-page-content">
-      <div class="container">
-        <div class="social-feed" aria-label="Social posts">
-          <article class="glass card social-post social-post-featured">
-            <div class="social-post-meta"><span class="social-post-type">On repeat</span><span aria-hidden="true">•</span><span>Music</span></div>
-            <h2>Five songs living rent-free in my head.</h2>
-            <p>Hindi, indie, and soulful tracks I keep coming back to. The soundtrack changes whenever my mood does.</p>
-            <ol class="social-playlist" aria-label="Current favorite songs">
-              <li><span>01</span><strong>Parinaam</strong><small>Dorwin John</small></li>
-              <li><span>02</span><strong>Deva Deva</strong><small>Arijit Singh, Jonita Gandhi</small></li>
-              <li><span>03</span><strong>Channa Mereya</strong><small>Arijit Singh</small></li>
-              <li><span>04</span><strong>Tere Vaaste</strong><small>Varun Jain, Sachin-Jigar</small></li>
-              <li><span>05</span><strong>Tu Hai Kahan</strong><small>AUR feat. ZAYN</small></li>
-            </ol>
-          </article>
-
-          <article class="glass card social-post">
-            <div class="social-post-meta"><span class="social-post-type">Opinion</span><span aria-hidden="true">•</span><span>AI</span></div>
-            <h2>Small models deserve more attention.</h2>
-            <p>The most useful model is often the one you can understand, run, and afford—not simply the largest one available.</p>
-            <a class="social-post-action" href="posts/small-models.html">Read the full thought <span aria-hidden="true">→</span></a>
-          </article>
-
-          <article class="glass card social-post social-post-eca">
-            <div class="social-post-meta"><span class="social-post-type">ECA</span><span aria-hidden="true">•</span><span>Outside the screen</span></div>
-            <h2>What keeps me curious away from code.</h2>
-            <div class="social-chips" aria-label="Extracurricular interests">
-              <span>🏏 Cricket</span><span>✍️ Writing</span><span>📖 Reading</span><span>🎶 Music</span><span>🚶 Long walks</span>
+    <section class="section social-page-content">
+      <div class="container social-hub">
+        <section class="social-block" aria-labelledby="music-heading">
+          <div class="social-section-head">
+            <div>
+              <span class="social-section-kicker"><span></span> Music</span>
+              <h2 id="music-heading">On repeat right now.</h2>
             </div>
-          </article>
+            <p>Five tracks currently soundtracking the quiet hours, long walks, and everything in between.</p>
+          </div>
 
-          <article class="glass card social-post">
-            <div class="social-post-meta"><span class="social-post-type">Currently liking</span><span aria-hidden="true">•</span><span>Small joys</span></div>
-            <h2>The things making ordinary days better.</h2>
-            <div class="social-chips">
-              <span>🍵 Masala chai</span><span>🌧️ Petrichor</span><span>🏔️ Himalayan mornings</span><span>⌨️ Tuned terminals</span>
+          <div class="social-music-panel glass">
+            <div class="social-music-cover" aria-hidden="true">
+              <div class="social-record">
+                <span class="social-record-ring"></span>
+                <span class="social-record-label">RY</span>
+              </div>
+              <div class="social-cover-copy">
+                <span>Current rotation</span>
+                <strong>Volume 01</strong>
+              </div>
             </div>
-          </article>
 
-          <article class="glass card social-post">
-            <div class="social-post-meta"><span class="social-post-type">Watching &amp; reading</span><span aria-hidden="true">•</span><span>Favorites</span></div>
-            <h2>Stories and ideas I return to.</h2>
-            <div class="social-chips">
-              <span>Interstellar</span><span>3 Idiots</span><span>Deep Work</span><span>The Alchemist</span>
+            <div class="social-tracklist" role="list" aria-label="Current favorite songs">
+              <div class="social-track" role="listitem"><span class="social-track-number">01</span><span class="social-track-copy"><strong>Parinaam</strong><small>Dorwin John</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
+              <div class="social-track" role="listitem"><span class="social-track-number">02</span><span class="social-track-copy"><strong>Deva Deva</strong><small>Arijit Singh, Jonita Gandhi</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
+              <div class="social-track" role="listitem"><span class="social-track-number">03</span><span class="social-track-copy"><strong>Channa Mereya</strong><small>Arijit Singh</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
+              <div class="social-track" role="listitem"><span class="social-track-number">04</span><span class="social-track-copy"><strong>Tere Vaaste</strong><small>Varun Jain, Sachin-Jigar</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
+              <div class="social-track" role="listitem"><span class="social-track-number">05</span><span class="social-track-copy"><strong>Tu Hai Kahan</strong><small>AUR feat. ZAYN</small></span><span class="social-track-mark" aria-hidden="true">♪</span></div>
             </div>
-          </article>
-        </div>
+          </div>
+        </section>
+
+        <section class="social-block" aria-labelledby="posts-heading">
+          <div class="social-section-head">
+            <div>
+              <span class="social-section-kicker"><span></span> Posts &amp; opinions</span>
+              <h2 id="posts-heading">Things worth saying.</h2>
+            </div>
+            <p>Short notes, unfinished thoughts, and opinions I would rather own here than feed to an algorithm.</p>
+          </div>
+
+          <div class="social-post-grid">
+            <article class="social-note social-note-primary glass">
+              <div class="social-note-meta"><span>Opinion</span><time datetime="2026-07-31">Jul 31, 2026</time></div>
+              <div>
+                <h3>Small models deserve more attention.</h3>
+                <p>The most useful model is often the one you can understand, run, and afford—not simply the largest one available.</p>
+              </div>
+              <a class="social-note-link" href="posts/small-models.html">
+                <span>Read the full thought</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </article>
+
+            <article class="social-note social-note-quote glass">
+              <span class="social-note-icon" aria-hidden="true">“</span>
+              <div>
+                <span class="social-note-label">Note to self</span>
+                <h3>Share what you are learning before it feels finished.</h3>
+              </div>
+              <p>Clarity usually arrives through explaining, not before it.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="social-block" aria-labelledby="life-heading">
+          <div class="social-section-head">
+            <div>
+              <span class="social-section-kicker"><span></span> Life lately</span>
+              <h2 id="life-heading">Beyond the screen.</h2>
+            </div>
+            <p>The activities, tiny comforts, stories, and ideas that keep the rest of life interesting.</p>
+          </div>
+
+          <div class="social-life-grid">
+            <article class="social-life-card social-life-card-wide glass">
+              <div class="social-life-icon" aria-hidden="true">✦</div>
+              <span class="social-note-label">ECA</span>
+              <h3>What keeps me curious away from code.</h3>
+              <div class="social-interest-list" aria-label="Extracurricular interests">
+                <span>Cricket</span><span>Writing</span><span>Reading</span><span>Music</span><span>Long walks</span>
+              </div>
+            </article>
+
+            <article class="social-life-card glass">
+              <div class="social-life-icon" aria-hidden="true">☕</div>
+              <span class="social-note-label">Currently liking</span>
+              <h3>Small joys.</h3>
+              <ul class="social-simple-list">
+                <li>Masala chai</li><li>Petrichor</li><li>Himalayan mornings</li><li>Tuned terminals</li>
+              </ul>
+            </article>
+
+            <article class="social-life-card glass">
+              <div class="social-life-icon" aria-hidden="true">◉</div>
+              <span class="social-note-label">Watching &amp; reading</span>
+              <h3>Stories I return to.</h3>
+              <ul class="social-simple-list">
+                <li>Interstellar</li><li>3 Idiots</li><li>Deep Work</li><li>The Alchemist</li>
+              </ul>
+            </article>
+          </div>
+        </section>
       </div>
     </section>
   </main>
