@@ -19,6 +19,11 @@ body {
   background: var(--paper);
   overflow-x: hidden;
 }
+.home-page {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
 a { color: inherit; }
 ::selection { background: var(--acid); color: var(--ink); }
 
@@ -85,6 +90,11 @@ a { color: inherit; }
   align-content: center;
   min-height: calc(100svh - 7rem);
   padding-top: 4rem;
+}
+.home-page .hero {
+  min-height: 0;
+  padding-top: clamp(1.5rem, 4vh, 3rem);
+  padding-bottom: clamp(1.5rem, 4vh, 3rem);
 }
 .hero::before {
   content: "Independent corner of the internet  ↗";
@@ -229,5 +239,12 @@ a.stack-item:hover, a.stack-item:focus-visible { transform: translateY(-6px) rot
   .page-title { font-size: clamp(3.35rem, 16vw, 5.25rem); }
   .stack-item, .stack-item:first-child, .stack-item:nth-child(2), .stack-item:last-child { grid-column: 1 / -1; min-height: 14rem; }
   .site-footer { flex-direction: column; }
+}
+@media (max-height: 760px) and (min-width: 701px) {
+  .home-page .brand { font-size: clamp(4rem, 10vh, 6rem); }
+  .home-page .headline { margin-top: 1.1rem; font-size: clamp(1.5rem, 4vh, 2.35rem); }
+  .home-page .lede { margin-top: .65rem; }
+  .home-page .cta-row { margin-top: 1.35rem; }
+  .home-page .hero::before { margin-bottom: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
