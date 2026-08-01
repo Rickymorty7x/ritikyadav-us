@@ -134,9 +134,32 @@ function pageDocument(page: { slug: string; title: string; excerpt: string; body
     : (page.excerpt || `A page published by Ritik Yadav.`);
   const canonical = isMissing ? 'https://ritikyadav.us/' : `https://ritikyadav.us/page/${encodeURIComponent(page.slug)}`;
   const body = isMissing
-    ? '<p>This page does not exist, is still a draft, or is scheduled for later.</p>'
+    ? ''
     : page.body.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean)
       .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
+  const main = isMissing
+    ? `<main class="not-found-main">
+    <section class="not-found-card" aria-labelledby="not-found-title">
+      <p class="not-found-code" aria-hidden="true">404</p>
+      <span class="eyebrow not-found-eyebrow">Page not found</span>
+      <h1 id="not-found-title">This page wandered off.</h1>
+      <p class="not-found-copy">The link may be old, or the page may have moved. Let’s get you somewhere useful.</p>
+      <div class="not-found-actions">
+        <a href="/" class="btn btn-primary">Back home</a>
+        <a href="/projects.html" class="btn btn-ghost glass-sm">View projects</a>
+      </div>
+    </section>
+  </main>`
+    : `<main class="dynamic-entry">
+    <div class="container dynamic-entry-inner">
+      <a href="/" class="back-link">← Back to home</a>
+      <span class="eyebrow">Page</span>
+      <h1>${escapeHtml(title)}</h1>
+      ${page.excerpt ? `<p class="dynamic-entry-excerpt">${escapeHtml(page.excerpt)}</p>` : ''}
+      <article class="dynamic-entry-body">${body}</article>
+    </div>
+  </main>
+  <footer class="footer"><div class="container footer-inner"><span>© <span id="year">${year}</span> Ritik</span><span class="footer-right">Published on my own corner of the web.</span></div></footer>`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -153,9 +176,9 @@ function pageDocument(page: { slug: string; title: string; excerpt: string; body
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=20260801-6" />
+  <link rel="stylesheet" href="/styles.css?v=20260801-7" />
 </head>
-<body class="detail-page">
+<body class="${isMissing ? 'not-found-page' : 'detail-page'}">
   <header class="nav-wrap">
     <nav class="nav glass" aria-label="Main navigation">
       <a href="/" class="logo"><span class="logo-dot"></span>Ritik<span class="logo-sub">.us</span></a>
@@ -166,16 +189,7 @@ function pageDocument(page: { slug: string; title: string; excerpt: string; body
       <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
     </nav>
   </header>
-  <main class="dynamic-entry">
-    <div class="container dynamic-entry-inner">
-      <a href="/" class="back-link">← Back to home</a>
-      <span class="eyebrow">${isMissing ? '404' : 'Page'}</span>
-      <h1>${escapeHtml(title)}</h1>
-      ${isMissing || !page.excerpt ? '' : `<p class="dynamic-entry-excerpt">${escapeHtml(page.excerpt)}</p>`}
-      <article class="dynamic-entry-body">${body}</article>
-    </div>
-  </main>
-  <footer class="footer"><div class="container footer-inner"><span>© <span id="year">${year}</span> Ritik</span><span class="footer-right">Published on my own corner of the web.</span></div></footer>
+  ${main}
   <script src="/script.js?v=20260801-7"></script>
 </body>
 </html>`;
