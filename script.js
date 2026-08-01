@@ -12,6 +12,38 @@ links?.querySelectorAll('a').forEach(a =>
   a.addEventListener('click', () => links.classList.remove('open'))
 );
 
+// Owner gateway: seven quick taps on the logo dot request a short-lived,
+// single-use entry URL from the server. The gesture is only a private shortcut;
+// the Worker still enforces authentication, rate limits, and secure sessions.
+(() => {
+  const dot = document.querySelector('.logo-dot');
+  if (!dot) return;
+  let taps = [];
+  dot.addEventListener('click', async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const current = Date.now();
+    taps = [...taps.filter(time => current - time < 4000), current];
+    if (taps.length < 7) return;
+    taps = [];
+    try {
+      const response = await fetch('/__ry/gateway', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: '{}'
+      });
+      if (!response.ok) return;
+      const payload = await response.json();
+      if (typeof payload.entry === 'string' && payload.entry.startsWith('/admin/entry?gate=')) {
+        window.location.assign(payload.entry);
+      }
+    } catch {
+      // The public site remains unaffected if the private service is unavailable.
+    }
+  });
+})();
+
 // Contact page: turn the chat-style composer into a ready-to-send email.
 const contactComposer = document.getElementById('contactComposer');
 contactComposer?.addEventListener('submit', (event) => {
@@ -55,7 +87,7 @@ revealTargets.forEach(el => io.observe(el));
 
 /* ---------------- Music Player (YouTube) ---------------- */
 // All IDs verified by user to be embeddable in their environment.
-const tracks = [
+let tracks = [
   {
     title: 'Parinaam',
     artist: 'Dorwin John',
@@ -137,7 +169,8 @@ function renderTracklist() {
 
   const socialRows = tracklistEl.querySelectorAll('.social-track');
   if (socialRows.length) {
-    socialRows.forEach((el, i) => {
+    tracklistEl.innerHTML = tracks.map((track, index) => `<button class="social-track" data-idx="${index}" type="button" role="listitem" aria-label="Play ${escapeHtmlUi(track.title)} by ${escapeHtmlUi(track.artist)}"><span class="social-track-number">${String(index + 1).padStart(2, '0')}</span><span class="social-track-copy"><strong>${escapeHtmlUi(track.title)}</strong><small>${escapeHtmlUi(track.artist)}</small></span><span class="social-track-mark" aria-hidden="true">▶</span></button>`).join('');
+    tracklistEl.querySelectorAll('.social-track').forEach((el, i) => {
       el.dataset.idx = String(i);
       el.addEventListener('click', () => {
         const idx = Number(el.dataset.idx);
@@ -287,14 +320,22 @@ function escapeHtmlUi(text) {
 }
 
 async function loadBlogManifestExtra() {
-  try {
-    const r = await fetch('data/blog-manifest.json', { cache: 'no-store' });
-    if (!r.ok) return [];
-    const j = await r.json();
-    return Array.isArray(j) ? j : [];
-  } catch {
-    return [];
-  }
+  const sources = [
+    fetch('data/blog-manifest.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : []),
+    fetch('/api/content?type=blog&limit=100').then(r => r.ok ? r.json() : { items: [] }),
+    fetch('/api/content?type=post&limit=100').then(r => r.ok ? r.json() : { items: [] })
+  ];
+  const [manifest, dynamicBlogs, dynamicPosts] = await Promise.all(sources.map(promise => promise.catch(() => [])));
+  const dynamic = [...(dynamicBlogs?.items || []), ...(dynamicPosts?.items || [])].map(item => ({
+    id: item.slug,
+    title: item.title,
+    date: item.published_at ? new Date(item.published_at * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '',
+    readTime: item.metadata?.readTime || 'Note',
+    tags: Array.isArray(item.metadata?.tags) ? item.metadata.tags : [item.type],
+    excerpt: item.excerpt,
+    url: item.metadata?.url || `content.html?type=${encodeURIComponent(item.type)}&slug=${encodeURIComponent(item.slug)}`
+  }));
+  return [...dynamic, ...(Array.isArray(manifest) ? manifest : [])];
 }
 
 async function mergedBlogListing() {
@@ -388,7 +429,7 @@ const DEFAULT_PROJECTS = [
 ];
 
 function renderHomeProjectCard(p) {
-  const study = `projects/${p.slug}.html`;
+  const study = p.studyUrl || `projects/${p.slug}.html`;
   const label = `${p.title} — open project case study`;
   const chipsHtml = (p.chips || []).map(c => `<span>${escapeHtmlUi(c)}</span>`).join('');
   return `
@@ -407,14 +448,21 @@ function renderHomeProjectCard(p) {
 }
 
 async function loadProjectsManifestExtra() {
-  try {
-    const r = await fetch('data/projects-manifest.json', { cache: 'no-store' });
-    if (!r.ok) return [];
-    const j = await r.json();
-    return Array.isArray(j) ? j : [];
-  } catch {
-    return [];
-  }
+  const [manifest, dynamic] = await Promise.all([
+    fetch('data/projects-manifest.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(() => []),
+    fetch('/api/content?type=project&limit=100').then(r => r.ok ? r.json() : { items: [] }).catch(() => ({ items: [] }))
+  ]);
+  const dynamicProjects = (dynamic.items || []).map(item => ({
+    slug: item.slug,
+    eyebrow: item.metadata?.eyebrow || 'Project',
+    title: item.title,
+    excerpt: item.excerpt,
+    chips: Array.isArray(item.metadata?.tags) ? item.metadata.tags : [],
+    githubUrl: item.metadata?.githubUrl || '#',
+    liveUrl: item.metadata?.liveUrl || '#',
+    studyUrl: item.metadata?.url || `content.html?type=project&slug=${encodeURIComponent(item.slug)}`
+  }));
+  return [...dynamicProjects, ...(Array.isArray(manifest) ? manifest : [])];
 }
 
 async function renderProjectsGridHome() {
@@ -434,6 +482,72 @@ async function renderProjectsGridHome() {
 }
 
 void renderProjectsGridHome();
+
+/* ---------------- Dynamic social feed ---------------- */
+async function renderDynamicSocialFeed() {
+  const feed = document.getElementById('socialDynamicFeed');
+  const block = document.getElementById('socialDynamicBlock');
+  if (!feed || !block) return;
+  try {
+    const types = ['opinion', 'post', 'music'];
+    const responses = await Promise.all(types.map(type =>
+      fetch(`/api/content?type=${type}&limit=30`).then(r => r.ok ? r.json() : { items: [] })
+    ));
+    const items = responses.flatMap(response => response.items || [])
+      .sort((a, b) => (b.published_at || b.updated_at) - (a.published_at || a.updated_at));
+    if (!items.length) return;
+    feed.innerHTML = items.map(item => {
+      const when = item.published_at ? new Date(item.published_at * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      const href = item.metadata?.url || `content.html?type=${encodeURIComponent(item.type)}&slug=${encodeURIComponent(item.slug)}`;
+      return `<article class="social-note glass">
+        <div class="social-note-meta"><span>${escapeHtmlUi(item.type)}</span><time>${escapeHtmlUi(when)}</time></div>
+        <div><h3>${escapeHtmlUi(item.title)}</h3><p>${escapeHtmlUi(item.excerpt)}</p></div>
+        <a class="social-note-link" href="${escapeHtmlUi(href)}"><span>Open</span>${ICON_ARROW}</a>
+      </article>`;
+    }).join('');
+    block.hidden = false;
+    observeRevealed(feed.querySelectorAll('.social-note'));
+  } catch {
+    // Static social content remains the fallback.
+  }
+}
+
+void renderDynamicSocialFeed();
+
+/* ---------------- Dynamic content detail ---------------- */
+async function renderDynamicContentPage() {
+  const host = document.getElementById('dynamicContent');
+  if (!host) return;
+  const params = new URLSearchParams(location.search);
+  const type = params.get('type') || '';
+  const slug = params.get('slug') || '';
+  if (!type || !slug) {
+    host.innerHTML = '<p class="content-error">That entry could not be found.</p>';
+    return;
+  }
+  try {
+    const response = await fetch(`/api/content?type=${encodeURIComponent(type)}&limit=100`);
+    if (!response.ok) throw new Error('Unavailable');
+    const payload = await response.json();
+    const item = (payload.items || []).find(entry => entry.slug === slug);
+    if (!item) throw new Error('Missing');
+    document.title = `${item.title} — Ritik`;
+    document.getElementById('dynamicType').textContent = item.type;
+    document.getElementById('dynamicTitle').textContent = item.title;
+    document.getElementById('dynamicExcerpt').textContent = item.excerpt || '';
+    const body = document.getElementById('dynamicBody');
+    body.replaceChildren(...String(item.body || '').split(/\n{2,}/).filter(Boolean).map(paragraph => {
+      const element = document.createElement('p');
+      element.textContent = paragraph;
+      return element;
+    }));
+    host.removeAttribute('aria-busy');
+  } catch {
+    host.innerHTML = '<p class="content-error">That entry is unavailable or has not been published.</p>';
+  }
+}
+
+void renderDynamicContentPage();
 
 /* ---------------- Share buttons (used on post pages) ---------------- */
 document.querySelectorAll('[data-share-copy]').forEach(btn => {
@@ -841,7 +955,22 @@ window.onYouTubeIframeAPIReady = function () {
   });
 };
 
-if (tracklistEl) {
+async function initMusicPlayer() {
+  if (!tracklistEl) return;
+  try {
+    const response = await fetch('/api/content?type=music&limit=50');
+    const payload = response.ok ? await response.json() : { items: [] };
+    const dynamicTracks = (payload.items || []).map(item => ({
+      title: item.title,
+      artist: item.metadata?.artist || item.excerpt || 'Ritik’s pick',
+      genre: item.metadata?.genre || 'On repeat',
+      videoId: item.metadata?.videoId || '',
+      duration: Number(item.metadata?.duration || 0)
+    })).filter(item => /^[A-Za-z0-9_-]{11}$/.test(item.videoId));
+    if (dynamicTracks.length) tracks = dynamicTracks;
+  } catch {
+    // Keep the bundled playlist as a resilient fallback.
+  }
   renderTracklist();
   updateNowPlayingMeta();
 
@@ -903,3 +1032,5 @@ if (tracklistEl) {
     }
   });
 }
+
+void initMusicPlayer();

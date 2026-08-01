@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ritikyadav-admin",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "ritikyadav.us/api/*", "zone_name": "ritikyadav.us" },
+    { "pattern": "ritikyadav.us/admin*", "zone_name": "ritikyadav.us" },
+    { "pattern": "ritikyadav.us/__ry/*", "zone_name": "ritikyadav.us" }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ritikyadav-admin",
+      "database_id": "3b214455-f09e-472c-81bf-f2f04aca2ff2",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAEDhBnRxTX0vF_db"
+  },
+  "secrets": {
+    "required": ["AUTH_PEPPER", "TURNSTILE_SECRET"]
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}

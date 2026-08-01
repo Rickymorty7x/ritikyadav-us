@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260801-4" />
+  <link rel="stylesheet" href="styles.css?v=20260801-6" />
 </head>
 <body class="social-page">
   <header class="nav-wrap">
@@ -142,6 +142,17 @@
           </div>
         </section>
 
+        <section class="social-block" id="socialDynamicBlock" aria-labelledby="latest-heading" hidden>
+          <div class="social-section-head">
+            <div>
+              <span class="social-section-kicker"><span></span> Latest</span>
+              <h2 id="latest-heading">Fresh from my desk.</h2>
+            </div>
+            <p>New music, notes, posts, and opinions published directly from my private workspace.</p>
+          </div>
+          <div class="social-post-grid" id="socialDynamicFeed"></div>
+        </section>
+
         <section class="social-block" aria-labelledby="life-heading">
           <div class="social-section-head">
             <div>
@@ -191,6 +202,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20260801-4"></script>
+  <script src="script.js?v=20260801-6"></script>
 </body>
 </html>
