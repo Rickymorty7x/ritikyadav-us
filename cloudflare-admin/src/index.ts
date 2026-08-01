@@ -1,6 +1,6 @@
 import { ADMIN_CSS, ADMIN_HTML, ADMIN_JS } from './admin-dashboard';
 import { LOGIN_JS, loginHtml } from './admin-ui';
-import { asset, html, json, methodNotAllowed, publicJson, redirect } from './responses';
+import { asset, html, json, methodNotAllowed, publicHtml, publicJson, redirect } from './responses';
 import {
   CSRF_COOKIE,
   GATE_COOKIE,
@@ -113,6 +113,72 @@ function parseMetadata<T extends { metadata: string }>(row: T): Omit<T, 'metadat
     if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) metadata = parsed as Record<string, unknown>;
   } catch { /* Existing invalid metadata is treated as empty. */ }
   return { ...row, metadata };
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character] || character);
+}
+
+function pageDocument(page: { slug: string; title: string; excerpt: string; body: string } | null): string {
+  const year = new Date().getUTCFullYear();
+  const isMissing = !page;
+  const title = isMissing ? 'Page not found' : page.title;
+  const description = isMissing
+    ? 'The page you requested could not be found.'
+    : (page.excerpt || `A page published by Ritik Yadav.`);
+  const canonical = isMissing ? 'https://ritikyadav.us/' : `https://ritikyadav.us/page/${encodeURIComponent(page.slug)}`;
+  const body = isMissing
+    ? '<p>This page does not exist, is still a draft, or is scheduled for later.</p>'
+    : page.body.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean)
+      .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${escapeHtml(title)} — Ritik</title>
+  <meta name="description" content="${escapeHtml(description)}" />
+  <link rel="canonical" href="${canonical}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="${escapeHtml(title)} — Ritik" />
+  <meta property="og:description" content="${escapeHtml(description)}" />
+  <meta property="og:url" content="${canonical}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=20260801-6" />
+</head>
+<body class="detail-page">
+  <header class="nav-wrap">
+    <nav class="nav glass" aria-label="Main navigation">
+      <a href="/" class="logo"><span class="logo-dot"></span>Ritik<span class="logo-sub">.us</span></a>
+      <ul class="nav-links">
+        <li><a href="/#about">About</a></li><li><a href="/skills.html">Skills</a></li><li><a href="/projects.html">Projects</a></li><li><a href="/social.html">Social</a></li><li><a href="/blog.html">Blog</a></li><li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <a href="/contact.html" class="btn btn-primary nav-cta">Let's talk</a>
+      <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+  <main class="dynamic-entry">
+    <div class="container dynamic-entry-inner">
+      <a href="/" class="back-link">← Back to home</a>
+      <span class="eyebrow">${isMissing ? '404' : 'Page'}</span>
+      <h1>${escapeHtml(title)}</h1>
+      ${isMissing || !page.excerpt ? '' : `<p class="dynamic-entry-excerpt">${escapeHtml(page.excerpt)}</p>`}
+      <article class="dynamic-entry-body">${body}</article>
+    </div>
+  </main>
+  <footer class="footer"><div class="container footer-inner"><span>© <span id="year">${year}</span> Ritik</span><span class="footer-right">Published on my own corner of the web.</span></div></footer>
+  <script src="/script.js?v=20260801-7"></script>
+</body>
+</html>`;
 }
 
 async function getAdmin(env: Env): Promise<AdminRow | null> {
@@ -566,6 +632,22 @@ async function publicContent(request: Request, env: Env): Promise<Response> {
   return publicJson({ items: result.results.map(parseMetadata) });
 }
 
+async function publicPage(request: Request, env: Env): Promise<Response> {
+  if (!['GET', 'HEAD'].includes(request.method)) return methodNotAllowed('GET, HEAD');
+  const url = new URL(request.url);
+  let slug = '';
+  try { slug = decodeURIComponent(url.pathname.slice('/page/'.length)).toLowerCase(); } catch { /* Invalid encoding stays missing. */ }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 120) {
+    const response = publicHtml(pageDocument(null), 404);
+    return request.method === 'HEAD' ? new Response(null, response) : response;
+  }
+  const page = await env.DB.prepare(`SELECT slug, title, excerpt, body FROM content
+    WHERE type = 'page' AND slug = ? AND status = 'published' AND (published_at IS NULL OR published_at <= ?) LIMIT 1`)
+    .bind(slug, now()).first<{ slug: string; title: string; excerpt: string; body: string }>();
+  const response = publicHtml(pageDocument(page), page ? 200 : 404);
+  return request.method === 'HEAD' ? new Response(null, response) : response;
+}
+
 async function handleAdminApi(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const path = new URL(request.url).pathname;
   if (path === '/api/admin/setup') return setupAdmin(request, env);
@@ -621,6 +703,7 @@ export default {
       if (url.pathname === '/__ry/gateway') return issueGateway(request, env);
       if (url.pathname === '/api/analytics/pageview') return trackPageview(request, env);
       if (url.pathname === '/api/content') return publicContent(request, env);
+      if (url.pathname.startsWith('/page/')) return publicPage(request, env);
       if (url.pathname.startsWith('/api/admin/')) return handleAdminApi(request, env, ctx);
       if (url.pathname === '/admin' || url.pathname.startsWith('/admin/')) return handleAdminPage(request, env);
       return json({ error: 'Not found.' }, 404);

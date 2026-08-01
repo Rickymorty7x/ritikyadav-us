@@ -34,6 +34,19 @@ export function publicJson(data: unknown, status = 200): Response {
   });
 }
 
+export function publicHtml(body: string, status = 200, extraHeaders?: HeadersInit): Response {
+  const headers = new Headers({
+    ...BASE_SECURITY_HEADERS,
+    'Content-Type': 'text/html; charset=utf-8',
+    'Cache-Control': status === 200 ? 'public, max-age=60, s-maxage=120, stale-while-revalidate=300' : 'no-store',
+    'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self'; font-src 'self' https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'",
+    'X-Frame-Options': 'DENY',
+  });
+  if (status !== 200) headers.set('X-Robots-Tag', 'noindex, nofollow');
+  if (extraHeaders) new Headers(extraHeaders).forEach((value, key) => headers.append(key, value));
+  return new Response(body, { status, headers });
+}
+
 export function html(body: string, status = 200): Response {
   return new Response(body, {
     status,

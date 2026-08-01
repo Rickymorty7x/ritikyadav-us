@@ -8,6 +8,7 @@
   "routes": [
     { "pattern": "ritikyadav.us/api/*", "zone_name": "ritikyadav.us" },
     { "pattern": "ritikyadav.us/admin*", "zone_name": "ritikyadav.us" },
+    { "pattern": "ritikyadav.us/page/*", "zone_name": "ritikyadav.us" },
     { "pattern": "ritikyadav.us/__ry/*", "zone_name": "ritikyadav.us" }
   ],
   "d1_databases": [
