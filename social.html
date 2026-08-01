@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social — Ritik</title>
+  <meta name="description" content="Music, opinions, personal posts, and things Ritik is enjoying lately." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav-wrap">
+    <nav class="nav glass">
+      <a href="index.html" class="logo">
+        <span class="logo-dot"></span>
+        Ritik<span class="logo-sub">Y.</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="social.html" class="is-current">Social</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <a href="index.html#contact" class="btn btn-primary nav-cta">Let's talk</a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="blog-hero social-page-hero">
+      <div class="container blog-hero-inner">
+        <a href="index.html" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Back to home
+        </a>
+        <span class="eyebrow">Social</span>
+        <h1>The less formal side.</h1>
+        <p class="blog-hero-sub">Music on repeat, opinions I’m working through, small updates, and everything I enjoy away from the portfolio.</p>
+      </div>
+    </section>
+
+    <section class="section section-blog social-page-content">
+      <div class="container">
+        <div class="social-feed" aria-label="Social posts">
+          <article class="glass card social-post social-post-featured">
+            <div class="social-post-meta"><span class="social-post-type">On repeat</span><span aria-hidden="true">•</span><span>Music</span></div>
+            <h2>Five songs living rent-free in my head.</h2>
+            <p>Hindi, indie, and soulful tracks I keep coming back to. The soundtrack changes whenever my mood does.</p>
+            <ol class="social-playlist" aria-label="Current favorite songs">
+              <li><span>01</span><strong>Parinaam</strong><small>Dorwin John</small></li>
+              <li><span>02</span><strong>Deva Deva</strong><small>Arijit Singh, Jonita Gandhi</small></li>
+              <li><span>03</span><strong>Channa Mereya</strong><small>Arijit Singh</small></li>
+              <li><span>04</span><strong>Tere Vaaste</strong><small>Varun Jain, Sachin-Jigar</small></li>
+              <li><span>05</span><strong>Tu Hai Kahan</strong><small>AUR feat. ZAYN</small></li>
+            </ol>
+          </article>
+
+          <article class="glass card social-post">
+            <div class="social-post-meta"><span class="social-post-type">Opinion</span><span aria-hidden="true">•</span><span>AI</span></div>
+            <h2>Small models deserve more attention.</h2>
+            <p>The most useful model is often the one you can understand, run, and afford—not simply the largest one available.</p>
+            <a class="social-post-action" href="posts/small-models.html">Read the full thought <span aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="glass card social-post social-post-eca">
+            <div class="social-post-meta"><span class="social-post-type">ECA</span><span aria-hidden="true">•</span><span>Outside the screen</span></div>
+            <h2>What keeps me curious away from code.</h2>
+            <div class="social-chips" aria-label="Extracurricular interests">
+              <span>🏏 Cricket</span><span>✍️ Writing</span><span>📖 Reading</span><span>🎶 Music</span><span>🚶 Long walks</span>
+            </div>
+          </article>
+
+          <article class="glass card social-post">
+            <div class="social-post-meta"><span class="social-post-type">Currently liking</span><span aria-hidden="true">•</span><span>Small joys</span></div>
+            <h2>The things making ordinary days better.</h2>
+            <div class="social-chips">
+              <span>🍵 Masala chai</span><span>🌧️ Petrichor</span><span>🏔️ Himalayan mornings</span><span>⌨️ Tuned terminals</span>
+            </div>
+          </article>
+
+          <article class="glass card social-post">
+            <div class="social-post-meta"><span class="social-post-type">Watching &amp; reading</span><span aria-hidden="true">•</span><span>Favorites</span></div>
+            <h2>Stories and ideas I return to.</h2>
+            <div class="social-chips">
+              <span>Interstellar</span><span>3 Idiots</span><span>Deep Work</span><span>The Alchemist</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Ritik</span>
+      <span class="footer-right">My corner of the internet.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

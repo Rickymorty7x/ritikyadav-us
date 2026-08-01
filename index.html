@@ -23,7 +23,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
-        <li><a href="#social">Social</a></li>
+        <li><a href="social.html">Social</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -276,231 +276,11 @@
       </div>
     </section>
 
-    <!-- Social -->
-    <section id="social" class="section social-section">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">04 — Social</span>
-          <h2>Things I’m sharing lately.</h2>
-          <p class="section-lead">My less-formal corner of the site — music on repeat, current opinions, small updates, and life outside the work.</p>
-        </div>
-
-        <div class="social-feed" aria-label="Recent social posts">
-          <article class="glass card social-post social-post-featured">
-            <div class="social-post-meta">
-              <span class="social-post-type">On repeat</span>
-              <span aria-hidden="true">•</span>
-              <span>Music</span>
-            </div>
-            <h3>Five songs living rent-free in my head.</h3>
-            <p>Hindi, indie, and soulful tracks I keep coming back to. This playlist changes whenever my mood does.</p>
-            <a class="social-post-action" href="listen.html">Open my music library <span aria-hidden="true">↗</span></a>
-          </article>
-
-          <article class="glass card social-post">
-            <div class="social-post-meta">
-              <span class="social-post-type">Opinion</span>
-              <span aria-hidden="true">•</span>
-              <span>AI</span>
-            </div>
-            <h3>Small models deserve more attention.</h3>
-            <p>The most useful model is often the one you can understand, run, and afford—not simply the largest one available.</p>
-            <a class="social-post-action" href="posts/small-models.html">Read the full thought <span aria-hidden="true">→</span></a>
-          </article>
-
-          <article class="glass card social-post social-post-eca">
-            <div class="social-post-meta">
-              <span class="social-post-type">ECA</span>
-              <span aria-hidden="true">•</span>
-              <span>Outside the screen</span>
-            </div>
-            <h3>What keeps me curious away from code.</h3>
-            <div class="social-chips" aria-label="Extracurricular interests">
-              <span>🏏 Cricket</span>
-              <span>✍️ Writing</span>
-              <span>📖 Reading</span>
-              <span>🎶 Music</span>
-              <span>🚶 Long walks</span>
-            </div>
-          </article>
-        </div>
-
-        <!-- Music: the soundtrack of my life -->
-        <div class="love-music-wrap">
-          <div class="love-section-label">
-            <span class="dot"></span> The soundtrack
-          </div>
-        </div>
-
-        <div class="glass card music-card love-music">
-          <!-- Now Playing -->
-          <div class="now-playing">
-            <div class="np-art" id="npArt">
-              <span id="npMonogram">ND</span>
-              <div class="np-equalizer" aria-hidden="true">
-                <span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span>
-              </div>
-              <div class="np-art-glow" aria-hidden="true"></div>
-            </div>
-            <div class="np-meta">
-              <div class="np-label">Now playing</div>
-              <h3 class="np-title" id="npTitle">Neural Drift</h3>
-              <div class="np-artist" id="npArtist">Aurora Beats · Electronic</div>
-
-              <div class="progress" id="progress" role="slider" aria-label="Seek" tabindex="0">
-                <div class="progress-fill" id="progressFill"></div>
-                <div class="progress-thumb" id="progressThumb"></div>
-              </div>
-              <div class="np-time">
-                <span id="curTime">0:00</span>
-                <span id="totTime">0:00</span>
-              </div>
-
-              <div class="np-controls">
-                <button class="ctrl" id="prevBtn" aria-label="Previous track">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM20 6 9 12l11 6V6z"/></svg>
-                </button>
-                <button class="ctrl ctrl-main" id="playBtn" aria-label="Play / Pause">
-                  <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
-                </button>
-                <button class="ctrl" id="nextBtn" aria-label="Next track">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM4 6v12l11-6L4 6z"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Track List -->
-          <ol class="tracklist" id="tracklist"></ol>
-        </div>
-
-        <div class="yt-host" aria-hidden="true">
-          <div id="ytplayer"></div>
-        </div>
-        <p class="player-note" id="playerNote" hidden></p>
-
-        <!-- Other things I love -->
-        <div class="love-section-label love-section-label-mt">
-          <span class="dot"></span> More things I’m into
-        </div>
-
-        <div class="love-grid">
-          <article class="glass card love-card">
-            <div class="love-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5V4.5z"/>
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-              </svg>
-            </div>
-            <h3>Books</h3>
-            <p>Stories &amp; ideas that rewired the way I think.</p>
-            <ul class="love-list">
-              <li>Sapiens — Yuval Noah Harari</li>
-              <li>Deep Work — Cal Newport</li>
-              <li>Atomic Habits — James Clear</li>
-              <li>The Alchemist — Paulo Coelho</li>
-            </ul>
-          </article>
-
-          <article class="glass card love-card">
-            <div class="love-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="5" width="18" height="14" rx="2"/>
-                <path d="M3 9h4M3 13h4M3 17h4M17 9h4M17 13h4M17 17h4"/>
-              </svg>
-            </div>
-            <h3>Films &amp; Shows</h3>
-            <p>What plays in the background while life happens.</p>
-            <ul class="love-list">
-              <li>Interstellar</li>
-              <li>3 Idiots</li>
-              <li>Breaking Bad</li>
-              <li>Zindagi Na Milegi Dobara</li>
-            </ul>
-          </article>
-
-          <article class="glass card love-card">
-            <div class="love-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 4c2.5 2 2.5 6 0 8v10"/>
-                <path d="M7 4v8M11 4v8M9 4v8"/>
-                <path d="M7 12c0 2 1 3 2 3s2-1 2-3"/>
-                <path d="M9 15v7"/>
-              </svg>
-            </div>
-            <h3>Food</h3>
-            <p>Comfort on a plate, joy in a cup.</p>
-            <ul class="love-list">
-              <li>Hyderabadi biryani</li>
-              <li>Masala chai at 5pm</li>
-              <li>Late-night Maggi</li>
-              <li>Aloo paratha with curd</li>
-            </ul>
-          </article>
-
-          <article class="glass card love-card">
-            <div class="love-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s7-7.5 7-13a7 7 0 1 0-14 0c0 5.5 7 13 7 13z"/>
-                <circle cx="12" cy="9" r="2.5"/>
-              </svg>
-            </div>
-            <h3>Places</h3>
-            <p>Where the air feels lighter.</p>
-            <ul class="love-list">
-              <li>Himalayas at sunrise</li>
-              <li>Quiet college libraries</li>
-              <li>Window seats on long trains</li>
-              <li>Any rooftop, after rain</li>
-            </ul>
-          </article>
-
-          <article class="glass card love-card">
-            <div class="love-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="5" y="5" width="14" height="14" rx="2"/>
-                <rect x="9" y="9" width="6" height="6"/>
-                <path d="M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4"/>
-              </svg>
-            </div>
-            <h3>Tech I geek over</h3>
-            <p>Tools that make building feel like play.</p>
-            <ul class="love-list">
-              <li>NVIDIA GPUs &amp; CUDA kernels</li>
-              <li>Mechanical keyboards</li>
-              <li>VS Code &amp; Jupyter</li>
-              <li>A perfectly tuned terminal</li>
-            </ul>
-          </article>
-
-          <article class="glass card love-card">
-            <div class="love-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3z"/>
-                <path d="M19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14z"/>
-              </svg>
-            </div>
-            <h3>Tiny joys</h3>
-            <p>The small stuff that quietly makes a day.</p>
-            <ul class="love-list">
-              <li>First sip of chai in the morning</li>
-              <li>That pre-rain petrichor</li>
-              <li>A model finally training without bugs</li>
-              <li>Long walks with a good playlist</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <!-- Contact -->
     <section id="contact" class="section">
       <div class="container">
         <div class="glass card contact-card">
-          <span class="eyebrow">05 — Contact</span>
+          <span class="eyebrow">04 — Contact</span>
           <h2>Let's build something intelligent.</h2>
           <p class="contact-sub">
             Open to internships, research collaborations, and friendly chats about ML.
@@ -537,7 +317,7 @@
       </div>
       <span class="footer-right">
         <span class="info-wrap">
-          <a href="listen.html" class="info-btn" aria-label="Listen to my music library" title="Listen to my music library">
+          <a href="social.html" class="info-btn" aria-label="Visit my social page" title="Visit my social page">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 18V5l12-2v13"/>
               <circle cx="6" cy="18" r="3"/>
@@ -586,7 +366,6 @@
   </div>
 
   <script src="script.js"></script>
-  <script src="https://www.youtube.com/iframe_api"></script>
   <!--Start of Tawk.to Script-->
 <script type="text/javascript">
   var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
