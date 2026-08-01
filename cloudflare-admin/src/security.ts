@@ -1,7 +1,10 @@
 export const SESSION_COOKIE = '__Host-ry_session';
 export const CSRF_COOKIE = '__Host-ry_csrf';
 export const GATE_COOKIE = '__Host-ry_gate';
-export const PASSWORD_ITERATIONS = 600_000;
+// Cloudflare's production Web Crypto runtime caps PBKDF2 at 100,000 iterations.
+// A secret pepper, unique salt, Turnstile, and strict online rate limits provide
+// the additional layers around this platform-supported maximum.
+export const PASSWORD_ITERATIONS = 100_000;
 
 const encoder = new TextEncoder();
 

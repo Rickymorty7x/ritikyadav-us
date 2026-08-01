@@ -5,7 +5,7 @@ CREATE TABLE admins (
   username TEXT NOT NULL UNIQUE COLLATE NOCASE,
   password_hash TEXT NOT NULL,
   password_salt TEXT NOT NULL,
-  password_iterations INTEGER NOT NULL CHECK (password_iterations >= 600000),
+  password_iterations INTEGER NOT NULL CHECK (password_iterations >= 100000),
   created_at INTEGER NOT NULL,
   password_changed_at INTEGER NOT NULL
 );
@@ -76,4 +76,3 @@ CREATE TABLE audit_log (
   created_at INTEGER NOT NULL
 );
 CREATE INDEX audit_log_time_idx ON audit_log(created_at DESC);
-
