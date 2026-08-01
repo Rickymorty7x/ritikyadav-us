@@ -20,7 +20,7 @@ The gesture is only a private shortcut. It is deliberately **not** treated as au
 
 ## Security controls
 
-- Passwords use PBKDF2-HMAC-SHA-256 with 600,000 iterations, a unique salt, and a separate Worker-secret pepper.
+- Passwords use PBKDF2-HMAC-SHA-256 at Cloudflare's supported 100,000-iteration maximum, a unique salt, and a separate Worker-secret pepper.
 - The database never receives a plaintext password.
 - Session IDs are 256-bit random values; only SHA-256 hashes are stored in D1.
 - Session cookies are `Secure`, `HttpOnly`, `SameSite=Strict`, host-only cookies.
