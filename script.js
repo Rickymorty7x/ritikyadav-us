@@ -405,45 +405,6 @@ const ICON_EXT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 
 const ICON_ARROW = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
-const DEFAULT_PROJECTS = [
-  {
-    slug: 'documind',
-    eyebrow: 'LLM · RAG',
-    title: 'DocuMind',
-    excerpt: 'A retrieval-augmented Q&A app that lets you chat with your PDFs. Built with LangChain, FAISS, and a sleek Streamlit UI.',
-    chips: ['Python', 'LangChain', 'FAISS', 'OpenAI'],
-    githubUrl: 'https://github.com/ritikyadav/documind',
-    liveUrl: 'https://documind.example.com'
-  },
-  {
-    slug: 'leaflens',
-    eyebrow: 'Computer Vision',
-    title: 'LeafLens',
-    excerpt: 'CNN-based plant disease classifier trained on PlantVillage, served via FastAPI with a real-time camera demo.',
-    chips: ['PyTorch', 'FastAPI', 'OpenCV'],
-    githubUrl: 'https://github.com/ritikyadav/leaflens',
-    liveUrl: 'https://leaflens.example.com'
-  },
-  {
-    slug: 'sentipulse',
-    eyebrow: 'NLP',
-    title: 'SentiPulse',
-    excerpt: 'Real-time sentiment dashboard for tweets & reviews using a fine-tuned DistilBERT and a Plotly dashboard.',
-    chips: ['Transformers', 'Plotly', 'SQLite'],
-    githubUrl: 'https://github.com/ritikyadav/sentipulse',
-    liveUrl: 'https://sentipulse.example.com'
-  },
-  {
-    slug: 'dreamframe',
-    eyebrow: 'Generative AI',
-    title: 'DreamFrame',
-    excerpt: 'Text-to-image playground experimenting with Stable Diffusion, ControlNet, and prompt engineering workflows.',
-    chips: ['Diffusers', 'Gradio', 'CUDA'],
-    githubUrl: 'https://github.com/ritikyadav/dreamframe',
-    liveUrl: 'https://dreamframe.example.com'
-  }
-];
-
 function renderHomeProjectCard(p) {
   const study = p.studyUrl || `projects/${p.slug}.html`;
   const label = `${p.title} — open project case study`;
@@ -486,7 +447,7 @@ async function renderProjectsGridHome() {
   if (!grid) return;
   const extra = await loadProjectsManifestExtra();
   const seen = new Set();
-  const merged = [...extra, ...DEFAULT_PROJECTS].filter(entry => {
+  const merged = extra.filter(entry => {
     const k = entry.slug;
     if (!k || seen.has(k)) return false;
     seen.add(k);
